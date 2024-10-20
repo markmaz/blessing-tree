@@ -6,12 +6,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 @SpringBootApplication
 public class BlessingTreeApplication extends SpringBootServletInitializer{
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(BlessingTreeApplication.class);
-    }
     public static void main(String[] args) {
         SpringApplication.run(BlessingTreeApplication.class, args);
     }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(BlessingTreeApplication.class);
+    }
 }
