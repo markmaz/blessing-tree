@@ -61,6 +61,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // Disable CSRF using the new lambda syntax
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/test.html").permitAll()
+                        .requestMatchers("/static/**").permitAll()
                         .requestMatchers(urlPrefix + "/login").permitAll()
                         .anyRequest().authenticated()
                 )
