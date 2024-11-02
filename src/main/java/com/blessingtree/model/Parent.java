@@ -1,21 +1,26 @@
 package com.blessingtree.model;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
 @Entity
 @Table(name="parents")
-public class Parent {
+public class Parent extends AuditRecord{
     public Parent(){}
 
-    public Parent(Long id, String firstName, String lastName, String primaryPhone, String secondaryPhone, List<Child> children) {
+    public Parent(Long id, String firstName, String lastName, String primaryPhone, String secondaryPhone,
+                  List<Child> children, String btid, Integer mhid) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.primaryPhone = primaryPhone;
         this.secondaryPhone = secondaryPhone;
         this.children = children;
+        this.btid = btid;
+        this.MHID = mhid;
     }
 
     @Id
@@ -31,11 +36,17 @@ public class Parent {
     @Column(name="phone_1")
     private String primaryPhone;
 
+    @Column(name= "BTID")
+    private String btid;
+
+    @Column(name="MHID")
+    private Integer MHID;
+
     @Column(name="phone_2")
     private String secondaryPhone;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Child> children;
+    private List<Child> children = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -85,16 +96,32 @@ public class Parent {
         this.children = children;
     }
 
+    public String getBtid() {
+        return btid;
+    }
+
+    public void setBtid(String bt_id) {
+        this.btid = bt_id;
+    }
+
+    public Integer getMHID() {
+        return MHID;
+    }
+
+    public void setMHID(Integer MHID) {
+        this.MHID = MHID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Parent parent)) return false;
-        return Objects.equals(id, parent.id) && Objects.equals(firstName, parent.firstName) && Objects.equals(lastName, parent.lastName) && Objects.equals(primaryPhone, parent.primaryPhone) && Objects.equals(secondaryPhone, parent.secondaryPhone);
+        return Objects.equals(id, parent.id) && Objects.equals(firstName, parent.firstName) && Objects.equals(lastName, parent.lastName) && Objects.equals(primaryPhone, parent.primaryPhone) && Objects.equals(btid, parent.btid) && Objects.equals(MHID, parent.MHID) && Objects.equals(secondaryPhone, parent.secondaryPhone) && Objects.equals(children, parent.children);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, primaryPhone, secondaryPhone);
+        return Objects.hash(id, firstName, lastName, primaryPhone, btid, MHID, secondaryPhone, children);
     }
 
     @Override
@@ -104,6 +131,8 @@ public class Parent {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", primaryPhone='" + primaryPhone + '\'' +
+                ", BTID='" + btid + '\'' +
+                ", MHID='" + MHID + '\'' +
                 ", secondaryPhone='" + secondaryPhone + '\'' +
                 ", children=" + children +
                 '}';

@@ -27,19 +27,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService extends BaseService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     private final JwtTokenUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(
                        @Autowired JwtTokenUtil jwtUtil,
-                       @Autowired PasswordEncoder passwordEncoder) {
+                       @Autowired PasswordEncoder passwordEncoder,
+                       @Autowired ModelMapper modelMapper) {
+        super(modelMapper);
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
     }
@@ -102,6 +101,10 @@ public class UserService implements UserDetailsService {
         return modelMapper.map(userRepository.save(user), UserDTO.class);
     }
 
+    public UserDTO findDTOUserById(Long id){
+        return convertToDTO(findUserById(id), UserDTO.class);
+    }
+
     public User findUserById(Long id){
         return userRepository.findUserByUserId(id).orElseThrow(() -> new ResourceNotFoundException("User Not found"));
     }
@@ -109,11 +112,13 @@ public class UserService implements UserDetailsService {
     public List<UserDTO> getAllUsers(){
         return userRepository.findAll(Sort.by("username"))
                 .stream()
-                .map(this::convertToDTO)
+                .map(user -> convertToDTO(user, UserDTO.class))
                 .collect(Collectors.toList());
     }
 
-    private UserDTO convertToDTO(User user) {
-        return modelMapper.map(user, UserDTO.class);
+    public void deleteUser(Long id){
+        //Might want to make this active vs inactive user.
+        User user = findUserById(id);
+        userRepository.delete(user);
     }
 }
