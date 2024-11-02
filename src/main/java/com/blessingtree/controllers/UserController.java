@@ -30,4 +30,14 @@ public class UserController extends BaseController{
         return this.userService.getAllUsers();
     }
 
+    @GetMapping("/users/{id}")
+    public UserDTO getAllUser(@PathVariable Long id, HttpServletRequest request){
+        return this.userService.findDTOUserById(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable long id, HttpServletRequest request){
+        this.userService.deleteUser(id);
+    }
+
 }
