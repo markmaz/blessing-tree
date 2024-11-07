@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="sponsors")
-public class Sponsor {
+public class Sponsor extends AuditRecord {
     public Sponsor(){}
 
     @Id
@@ -48,13 +48,6 @@ public class Sponsor {
 
     @Column(name="want_to_volunteer")
     private Boolean wantToVolunteer;
-
-    @Column(name="modified_date")
-    private String modifiedDate;
-
-    @ManyToOne
-    @JoinColumn(name="modified_by", referencedColumnName = "user_id")
-    private User modifiedBy;
 
     public Long getId() {
         return id;
@@ -152,32 +145,16 @@ public class Sponsor {
         this.wantToVolunteer = wantToVolunteer;
     }
 
-    public String getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(String modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public User getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(User modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Sponsor sponsor)) return false;
-        return Objects.equals(id, sponsor.id) && Objects.equals(address, sponsor.address) && Objects.equals(gifts, sponsor.gifts) && Objects.equals(lastName, sponsor.lastName) && Objects.equals(firstName, sponsor.firstName) && Objects.equals(sponsorYear, sponsor.sponsorYear) && Objects.equals(phone, sponsor.phone) && Objects.equals(email, sponsor.email) && Objects.equals(bestTimeToCall, sponsor.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, sponsor.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, sponsor.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, sponsor.wantToVolunteer) && Objects.equals(modifiedDate, sponsor.modifiedDate) && Objects.equals(modifiedBy, sponsor.modifiedBy);
+        return Objects.equals(id, sponsor.id) && Objects.equals(address, sponsor.address) && Objects.equals(gifts, sponsor.gifts) && Objects.equals(lastName, sponsor.lastName) && Objects.equals(firstName, sponsor.firstName) && Objects.equals(sponsorYear, sponsor.sponsorYear) && Objects.equals(phone, sponsor.phone) && Objects.equals(email, sponsor.email) && Objects.equals(bestTimeToCall, sponsor.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, sponsor.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, sponsor.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, sponsor.wantToVolunteer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, modifiedDate, modifiedBy);
+        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer);
     }
 
     @Override
@@ -195,8 +172,6 @@ public class Sponsor {
                 ", hasSponsoredPreviously=" + hasSponsoredPreviously +
                 ", howDidYouHearAboutUs='" + howDidYouHearAboutUs + '\'' +
                 ", wantToVolunteer=" + wantToVolunteer +
-                ", modifiedDate='" + modifiedDate + '\'' +
-                ", modifiedBy=" + modifiedBy +
                 '}';
     }
 }
