@@ -90,4 +90,11 @@ public class GiftService extends BaseService{
 
         return modelMapper.map(giftRepository.save(gift), GiftDTO.class);
     }
+
+    public List<GiftDTO> getAllGifts(){
+        return giftRepository.findAll()
+                .stream()
+                .map(gift -> convertToDTO(gift, GiftDTO.class))
+                .collect(Collectors.toList());
+    }
 }

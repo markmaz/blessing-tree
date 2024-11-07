@@ -35,4 +35,9 @@ public class GiftController extends BaseController{
     public GiftDTO updateGift(@PathVariable Long id, @RequestBody GiftDTO giftDTO, HttpServletRequest request){
         return giftService.updateGift(id, giftDTO, getLoggedInUser(request));
     }
+
+    @GetMapping("/gifts")
+    public List<GiftDTO> getGifts(){
+        return giftService.getAllGifts();
+    }
 }
