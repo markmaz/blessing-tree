@@ -18,7 +18,7 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60; // Token valid for 5 hours
+    public static final long JWT_TOKEN_VALIDITY = 7 * 24 * 60 * 60; // Token valid for 1 week
 
     @Value("${jwt.secret}")
     private String secret;
@@ -49,29 +49,33 @@ public class JwtTokenUtil implements Serializable {
     }
 
     // Check if the token has expired
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
 
     // Generate a token for the user
-    public String generateToken(UserDetails userDetails, Long id) {
+    public String generateToken(UserDetails userDetails, Long id, Long expirationSeconds) {
+        if(expirationSeconds == null){
+            expirationSeconds = JWT_TOKEN_VALIDITY;
+        }
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", "USER");
         claims.put("userID", id);
-        return doGenerateToken(claims, userDetails.getUsername());
+        return doGenerateToken(claims, userDetails.getUsername(), expirationSeconds);
     }
 
     // While creating the token:
     // 1. Define claims of the token, like issuer, expiration, subject, and the ID
     // 2. Sign the JWT using the HS512 algorithm and secret key.
     // 3. Compact the JWT to a URL-safe string.
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
+    private String doGenerateToken(Map<String, Object> claims, String subject, Long expirationSeconds) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationSeconds * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
