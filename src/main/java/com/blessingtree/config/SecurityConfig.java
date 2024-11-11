@@ -64,6 +64,8 @@ public class SecurityConfig {
                         .requestMatchers("/test.html").permitAll()
                         .requestMatchers("/static/**").permitAll()
                         .requestMatchers(urlPrefix + "/login").permitAll()
+                        .requestMatchers(urlPrefix + "/reminder").permitAll()
+                        .requestMatchers(urlPrefix + "/reset").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
