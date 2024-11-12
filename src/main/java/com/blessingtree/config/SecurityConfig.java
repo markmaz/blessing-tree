@@ -66,6 +66,7 @@ public class SecurityConfig {
                         .requestMatchers(urlPrefix + "/login").permitAll()
                         .requestMatchers(urlPrefix + "/reminder").permitAll()
                         .requestMatchers(urlPrefix + "/reset").permitAll()
+                        .requestMatchers(urlPrefix + "/sponsorEmail").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
