@@ -1,12 +1,15 @@
 package com.blessingtree.service;
 
+import com.blessingtree.dto.FamilyNoteDTO;
 import com.blessingtree.dto.ParentDTO;
 import com.blessingtree.exceptions.ResourceNotFoundException;
-import com.blessingtree.model.Child;
+import com.blessingtree.model.FamilyNote;
 import com.blessingtree.model.Parent;
 import com.blessingtree.model.User;
+import com.blessingtree.repository.FamilyNoteRepository;
 import com.blessingtree.repository.ParentRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.http.HttpStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -26,9 +29,14 @@ import java.util.stream.Collectors;
 public class ParentService extends BaseService{
     private final ParentRepository parentRepository;
 
-    public ParentService(@Autowired  ParentRepository parentRepository, @Autowired ModelMapper mapper){
+    private final FamilyNoteRepository noteRepository;
+
+    public ParentService(@Autowired  ParentRepository parentRepository,
+                         @Autowired ModelMapper mapper,
+                         @Autowired FamilyNoteRepository noteRepository){
         super(mapper);
         this.parentRepository = parentRepository;
+        this.noteRepository = noteRepository;
     }
 
     public List<ParentDTO> getParents(){
@@ -115,5 +123,19 @@ public class ParentService extends BaseService{
         parent.setModifiedDate(timestamp.toString());
 
         return convertToDTO(parentRepository.save(parent), ParentDTO.class);
+    }
+
+    public ParentDTO addNote(Long parentID, FamilyNoteDTO note, User user){
+        Parent parent = parentRepository.findParentById(parentID).orElseThrow(() -> new EntityNotFoundException("Parent Not found"));
+        FamilyNote familyNote = modelMapper.map(note, FamilyNote.class);
+        familyNote.setParent(parent);
+        parent.getNotes().add(familyNote);
+
+        return convertToDTO(parentRepository.save(parent), ParentDTO.class);
+    }
+
+    public int deleteNote(Long noteID){
+        noteRepository.deleteById(noteID);
+        return HttpStatus.SC_OK;
     }
 }

@@ -6,7 +6,7 @@ import java.util.Objects;
 public class ChildDTO {
     private Long id;
 
-    private Long age;
+    private String age;
 
     private String gender;
 
@@ -16,7 +16,7 @@ public class ChildDTO {
 
     public ChildDTO(){}
 
-    public ChildDTO(Long id, List<GiftDTO> gifts, Long age, String gender){
+    public ChildDTO(Long id, List<GiftDTO> gifts, String age, String gender){
         this.id = id;
         this.gifts = gifts;
         this.age = age;
@@ -39,11 +39,11 @@ public class ChildDTO {
         this.gifts = gifts;
     }
 
-    public Long getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(Long age) {
+    public void setAge(String age) {
         this.age = age;
     }
 

@@ -20,7 +20,7 @@ public class Child extends AuditRecord{
     private List<Gift> gifts;
 
     @Column(name="age")
-    private Long age;
+    private String age;
 
     @Column(name="gender")
     private String gender;
@@ -49,11 +49,11 @@ public class Child extends AuditRecord{
         this.gifts = gifts;
     }
 
-    public Long getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(Long age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
