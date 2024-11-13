@@ -1,11 +1,15 @@
 package com.blessingtree.controllers;
 
+import com.blessingtree.dto.FamilyNoteDTO;
 import com.blessingtree.dto.ParentDTO;
 import com.blessingtree.service.ParentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -50,5 +54,15 @@ public class ParentController extends BaseController{
     @PutMapping("/parents/{id}")
     public ParentDTO parentUpdate(@PathVariable Long id, @RequestBody ParentDTO parentDTO, HttpServletRequest request){
         return parentService.updateParent(id, parentDTO, getLoggedInUser(request));
+    }
+
+    @PostMapping("/parents/{id}/notes")
+    public ParentDTO addNoteToParent(@PathVariable Long id, @RequestBody FamilyNoteDTO note, HttpServletRequest request){
+        return parentService.addNote(id, note, getLoggedInUser(request));
+    }
+
+    @DeleteMapping("/parents/{id}/notes/{note_id}")
+    public ResponseEntity<?> deleteNote(@PathVariable Long id, @PathVariable Long note_id){
+        return ResponseEntity.status(parentService.deleteNote(note_id)).build();
     }
 }

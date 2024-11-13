@@ -48,6 +48,9 @@ public class Parent extends AuditRecord{
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Child> children = new ArrayList<>();
 
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FamilyNote> notes = new ArrayList<>();
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -112,16 +115,24 @@ public class Parent extends AuditRecord{
         this.MHID = MHID;
     }
 
+    public List<FamilyNote> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<FamilyNote> notes) {
+        this.notes = notes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Parent parent)) return false;
-        return Objects.equals(id, parent.id) && Objects.equals(firstName, parent.firstName) && Objects.equals(lastName, parent.lastName) && Objects.equals(primaryPhone, parent.primaryPhone) && Objects.equals(btid, parent.btid) && Objects.equals(MHID, parent.MHID) && Objects.equals(secondaryPhone, parent.secondaryPhone) && Objects.equals(children, parent.children);
+        return Objects.equals(id, parent.id) && Objects.equals(firstName, parent.firstName) && Objects.equals(lastName, parent.lastName) && Objects.equals(primaryPhone, parent.primaryPhone) && Objects.equals(btid, parent.btid) && Objects.equals(MHID, parent.MHID) && Objects.equals(secondaryPhone, parent.secondaryPhone) && Objects.equals(children, parent.children) && Objects.equals(notes, parent.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, primaryPhone, btid, MHID, secondaryPhone, children);
+        return Objects.hash(id, firstName, lastName, primaryPhone, btid, MHID, secondaryPhone, children, notes);
     }
 
     @Override
@@ -131,10 +142,11 @@ public class Parent extends AuditRecord{
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", primaryPhone='" + primaryPhone + '\'' +
-                ", BTID='" + btid + '\'' +
-                ", MHID='" + MHID + '\'' +
+                ", btid='" + btid + '\'' +
+                ", MHID=" + MHID +
                 ", secondaryPhone='" + secondaryPhone + '\'' +
                 ", children=" + children +
+                ", notes=" + notes +
                 '}';
     }
 }
