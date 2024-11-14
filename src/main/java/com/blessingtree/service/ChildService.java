@@ -71,4 +71,7 @@ public class ChildService extends BaseService {
 
     }
 
+    public Long getCount(){
+        return childRepository.count();
+    }
 }

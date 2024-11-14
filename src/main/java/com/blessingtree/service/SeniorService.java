@@ -24,4 +24,9 @@ public class SeniorService extends BaseService {
                 .map(senior -> convertToDTO(senior, SeniorDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public Long getCount() {
+        return seniorRepository.count();
+    }
+
 }

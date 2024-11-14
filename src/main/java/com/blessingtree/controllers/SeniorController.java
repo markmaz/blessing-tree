@@ -1,5 +1,6 @@
 package com.blessingtree.controllers;
 
+import com.blessingtree.dto.CountDTO;
 import com.blessingtree.dto.SeniorDTO;
 import com.blessingtree.service.SeniorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,12 @@ public class SeniorController extends BaseController{
     @GetMapping("/seniors")
     public List<SeniorDTO> getAllSeniors(){
         return seniorService.getAllSeniors();
+    }
+
+    @GetMapping("/seniors/count")
+    public CountDTO getCount(){
+        CountDTO countDTO = new CountDTO();
+        countDTO.setCount(seniorService.getCount());
+        return countDTO;
     }
 }

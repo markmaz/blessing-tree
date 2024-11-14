@@ -18,4 +18,7 @@ public interface ChildRepository extends JpaRepository<Child, Long> {
 
     @Override
     Child getReferenceById(Long aLong);
+
+    @Override
+    long count();
 }

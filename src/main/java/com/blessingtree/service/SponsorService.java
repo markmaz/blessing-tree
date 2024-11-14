@@ -68,4 +68,8 @@ public class SponsorService extends BaseService{
 
         return modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
+
+    public Long getCount(){
+        return sponsorRepository.count();
+    }
 }

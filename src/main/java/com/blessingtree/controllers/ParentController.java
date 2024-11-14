@@ -1,5 +1,6 @@
 package com.blessingtree.controllers;
 
+import com.blessingtree.dto.CountDTO;
 import com.blessingtree.dto.FamilyNoteDTO;
 import com.blessingtree.dto.ParentDTO;
 import com.blessingtree.service.ParentService;
@@ -64,5 +65,12 @@ public class ParentController extends BaseController{
     @DeleteMapping("/parents/{id}/notes/{note_id}")
     public ResponseEntity<?> deleteNote(@PathVariable Long id, @PathVariable Long note_id){
         return ResponseEntity.status(parentService.deleteNote(note_id)).build();
+    }
+
+    @GetMapping("/parents/count")
+    public CountDTO getCount(){
+        CountDTO countDTO = new CountDTO();
+        countDTO.setCount(parentService.getCount());
+        return countDTO;
     }
 }

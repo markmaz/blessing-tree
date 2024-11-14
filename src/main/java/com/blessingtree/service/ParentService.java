@@ -138,4 +138,8 @@ public class ParentService extends BaseService{
         noteRepository.deleteById(noteID);
         return HttpStatus.SC_OK;
     }
+
+    public Long getCount(){
+        return parentRepository.count();
+    }
 }

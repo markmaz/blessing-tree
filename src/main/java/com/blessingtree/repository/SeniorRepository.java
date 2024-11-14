@@ -12,4 +12,7 @@ import java.util.List;
 public interface SeniorRepository extends JpaRepository<Senior, Long> {
     @Override
     List<Senior> findAll();
+
+    @Override
+    long count();
 }
