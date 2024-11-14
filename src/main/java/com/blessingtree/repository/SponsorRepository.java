@@ -21,4 +21,7 @@ public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
 
     @Override
     void deleteById(Long aLong);
+
+    @Override
+    long count();
 }

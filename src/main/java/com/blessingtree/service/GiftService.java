@@ -1,6 +1,7 @@
 package com.blessingtree.service;
 
 import com.blessingtree.dto.GiftDTO;
+import com.blessingtree.dto.TopGiftDTO;
 import com.blessingtree.exceptions.ResourceNotFoundException;
 import com.blessingtree.model.Child;
 import com.blessingtree.model.Gift;
@@ -11,6 +12,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -91,10 +95,21 @@ public class GiftService extends BaseService{
         return modelMapper.map(giftRepository.save(gift), GiftDTO.class);
     }
 
-    public List<GiftDTO> getAllGifts(){
+    public List<TopGiftDTO> getAllGifts(){
         return giftRepository.findAll()
                 .stream()
-                .map(gift -> convertToDTO(gift, GiftDTO.class))
+                .map(gift -> convertToDTO(gift, TopGiftDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public Long getCount(){
+        return giftRepository.count();
+    }
+
+    public Page<TopGiftDTO> getAllUnsponsoredGifts(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Gift> giftPage= giftRepository.findBySponsorIsNull(pageable);
+
+        return giftPage.map(gift -> modelMapper.map(gift, TopGiftDTO.class));
     }
 }

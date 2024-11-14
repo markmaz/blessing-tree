@@ -22,4 +22,7 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
 
     @Override
     void deleteById(Long aLong);
+
+    @Override
+    long count();
 }

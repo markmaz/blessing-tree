@@ -1,9 +1,12 @@
 package com.blessingtree.controllers;
 
+import com.blessingtree.dto.CountDTO;
 import com.blessingtree.dto.GiftDTO;
+import com.blessingtree.dto.TopGiftDTO;
 import com.blessingtree.service.GiftService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +40,20 @@ public class GiftController extends BaseController{
     }
 
     @GetMapping("/gifts")
-    public List<GiftDTO> getGifts(){
+    public List<TopGiftDTO> getGifts(){
         return giftService.getAllGifts();
+    }
+
+    @GetMapping("/gifts/count")
+    public CountDTO getCount(){
+        CountDTO countDTO = new CountDTO();
+        countDTO.setCount(giftService.getCount());
+        return countDTO;
+    }
+
+    @GetMapping("/gifts/unsponsored")
+    public Page<TopGiftDTO> getUnsponsoredGifts(@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size){
+        return giftService.getAllUnsponsoredGifts(page, size);
     }
 }

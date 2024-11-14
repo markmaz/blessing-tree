@@ -1,6 +1,7 @@
 package com.blessingtree.controllers;
 
 import com.blessingtree.dto.ChildDTO;
+import com.blessingtree.dto.CountDTO;
 import com.blessingtree.dto.GiftDTO;
 import com.blessingtree.service.ChildService;
 import com.blessingtree.service.GiftService;
@@ -45,5 +46,12 @@ public class ChildController extends BaseController{
     @PostMapping("/parents/{id}/children/{child_id}/gifts")
     public GiftDTO addGiftToChild(@PathVariable Long child_id, @RequestBody GiftDTO giftDTO, HttpServletRequest request){
         return giftService.saveGift(child_id, giftDTO, getLoggedInUser(request));
+    }
+
+    @GetMapping("/children/count")
+    public CountDTO getCount(){
+        CountDTO countDTO = new CountDTO();
+        countDTO.setCount(childService.getCount());
+        return countDTO;
     }
 }

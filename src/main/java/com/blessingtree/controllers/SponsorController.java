@@ -1,5 +1,6 @@
 package com.blessingtree.controllers;
 
+import com.blessingtree.dto.CountDTO;
 import com.blessingtree.dto.SponsorDTO;
 import com.blessingtree.service.SponsorService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +40,13 @@ public class SponsorController extends BaseController{
     @DeleteMapping("/sponsors/{id}")
     public void deleteSponsor(@PathVariable Long id){
         sponsorService.deleteSponsor(id);
+    }
+
+    @GetMapping("/sponsors/count")
+    public CountDTO getCount(){
+        CountDTO countDTO = new CountDTO();
+        countDTO.setCount(sponsorService.getCount());
+        return countDTO;
     }
 }
 
