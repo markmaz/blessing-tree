@@ -9,6 +9,7 @@ import java.util.Objects;
 public class FamilyNote {
     @Id
     @Column(name = "family_note_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -19,7 +20,7 @@ public class FamilyNote {
     private String note;
 
     @Column(name = "note_date")
-    private String note_date;
+    private String noteDate;
 
     public Long getId() {
         return id;
@@ -45,24 +46,24 @@ public class FamilyNote {
         this.note = note;
     }
 
-    public String getNote_date() {
-        return note_date;
+    public String getNoteDate() {
+        return noteDate;
     }
 
-    public void setNote_date(String note_date) {
-        this.note_date = note_date;
+    public void setNoteDate(String note_date) {
+        this.noteDate = note_date;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof FamilyNote that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(parent, that.parent) && Objects.equals(note, that.note) && Objects.equals(note_date, that.note_date);
+        return Objects.equals(id, that.id) && Objects.equals(parent, that.parent) && Objects.equals(note, that.note) && Objects.equals(noteDate, that.noteDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, parent, note, note_date);
+        return Objects.hash(id, parent, note, noteDate);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class FamilyNote {
                 "id=" + id +
                 ", parent=" + parent +
                 ", note='" + note + '\'' +
-                ", note_date='" + note_date + '\'' +
+                ", note_date='" + noteDate + '\'' +
                 '}';
     }
 }

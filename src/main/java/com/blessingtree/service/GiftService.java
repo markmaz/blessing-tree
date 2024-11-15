@@ -2,12 +2,14 @@ package com.blessingtree.service;
 
 import com.blessingtree.dto.GiftDTO;
 import com.blessingtree.dto.TopGiftDTO;
+import com.blessingtree.dto.TopTenDTO;
 import com.blessingtree.exceptions.ResourceNotFoundException;
 import com.blessingtree.model.Child;
 import com.blessingtree.model.Gift;
 import com.blessingtree.model.User;
 import com.blessingtree.repository.ChildRepository;
 import com.blessingtree.repository.GiftRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,13 +30,16 @@ import java.util.stream.Collectors;
 public class GiftService extends BaseService{
     private final GiftRepository giftRepository;
     private final ChildRepository childRepository;
+    private final EntityManager entityManager;
 
     public GiftService(@Autowired ModelMapper mapper,
                        @Autowired GiftRepository giftRepository,
-                       @Autowired ChildRepository childRepository) {
+                       @Autowired ChildRepository childRepository,
+                       @Autowired EntityManager entityManager) {
         super(mapper);
         this.giftRepository = giftRepository;
         this.childRepository = childRepository;
+        this.entityManager = entityManager;
     }
 
     public GiftDTO saveGift(Long childID, GiftDTO giftDTO, User loggedInUser){
@@ -111,5 +116,25 @@ public class GiftService extends BaseService{
         Page<Gift> giftPage= giftRepository.findBySponsorIsNull(pageable);
 
         return giftPage.map(gift -> modelMapper.map(gift, TopGiftDTO.class));
+    }
+
+    public List<TopTenDTO> getTopTen(String gender, String limit){
+        String jql = "SELECT g.description, count(g) as cnt " +
+                "FROM Gift g " +
+                "JOIN g.child c " +
+                "WHERE c.gender = :gender " +
+                "GROUP BY g.description " +
+                "ORDER BY cnt DESC";
+
+        // Use setMaxResults to limit the query results, as JPQL doesn't support `LIMIT`
+        List<Object[]> results = entityManager.createQuery(jql, Object[].class)
+                .setParameter("gender", gender)
+                .setMaxResults(Integer.parseInt(limit))
+                .getResultList();
+
+        return results
+                .stream()
+                .map(result -> new TopTenDTO(result[0].toString(), ((Number) result[1]).longValue()))
+                .collect(Collectors.toList());
     }
 }

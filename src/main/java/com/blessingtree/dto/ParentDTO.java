@@ -15,9 +15,10 @@ public class ParentDTO {
     private List<ChildDTO> children;
     private String btid;
     private Integer mhid;
+    private List<FamilyNoteDTO> notes;
 
    public ParentDTO(Long id, String firstName, String lastName, String primaryPhone, String secondaryPhone,
-                    String btid, Integer mhid, List<ChildDTO> children){
+                    String btid, Integer mhid, List<ChildDTO> children, List<FamilyNoteDTO> notes){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,6 +27,7 @@ public class ParentDTO {
         this.children = children;
         this.btid = btid;
         this.mhid = mhid;
+        this.notes = notes;
     }
 
     public ParentDTO(){}
@@ -94,16 +96,24 @@ public class ParentDTO {
         this.mhid = mhid;
     }
 
+    public List<FamilyNoteDTO> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<FamilyNoteDTO> notes) {
+        this.notes = notes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ParentDTO parentDTO)) return false;
-        return Objects.equals(id, parentDTO.id) && Objects.equals(firstName, parentDTO.firstName) && Objects.equals(lastName, parentDTO.lastName) && Objects.equals(primaryPhone, parentDTO.primaryPhone) && Objects.equals(secondaryPhone, parentDTO.secondaryPhone) && Objects.equals(children, parentDTO.children) && Objects.equals(btid, parentDTO.btid) && Objects.equals(mhid, parentDTO.mhid);
+        return Objects.equals(id, parentDTO.id) && Objects.equals(firstName, parentDTO.firstName) && Objects.equals(lastName, parentDTO.lastName) && Objects.equals(primaryPhone, parentDTO.primaryPhone) && Objects.equals(secondaryPhone, parentDTO.secondaryPhone) && Objects.equals(children, parentDTO.children) && Objects.equals(btid, parentDTO.btid) && Objects.equals(mhid, parentDTO.mhid) && Objects.equals(notes, parentDTO.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, primaryPhone, secondaryPhone, children, btid, mhid);
+        return Objects.hash(id, firstName, lastName, primaryPhone, secondaryPhone, children, btid, mhid, notes);
     }
 
     @Override
@@ -116,7 +126,8 @@ public class ParentDTO {
                 ", secondaryPhone='" + secondaryPhone + '\'' +
                 ", children=" + children +
                 ", btid='" + btid + '\'' +
-                ", mhid='" + mhid + '\'' +
+                ", mhid=" + mhid +
+                ", notes=" + notes +
                 '}';
     }
 }
