@@ -6,6 +6,7 @@ import com.blessingtree.model.Sponsor;
 import com.blessingtree.model.User;
 import com.blessingtree.repository.AddressRepository;
 import com.blessingtree.repository.SponsorRepository;
+import com.blessingtree.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class SponsorService extends BaseService{
+    public static final String SYSTEM_USER = "mmaslako";
     private final SponsorRepository sponsorRepository;
     private final AddressRepository addressRepository;
 
+    private final UserRepository userRepository;
+
     public SponsorService(@Autowired SponsorRepository sponsorRepository,
                           @Autowired ModelMapper mapper,
-                          @Autowired AddressRepository addressRepository){
+                          @Autowired AddressRepository addressRepository,
+                          @Autowired UserRepository userRepository){
         super(mapper);
         this.sponsorRepository = sponsorRepository;
         this.addressRepository = addressRepository;
+        this.userRepository = userRepository;
     }
 
     public List<SponsorDTO> getAllSponsors(){
@@ -80,6 +87,11 @@ public class SponsorService extends BaseService{
 
     @Transactional
     public SponsorDTO createSponsor(Sponsor sponsor){
+        User user = userRepository.findUserByUsername(SYSTEM_USER).orElse(null);
+        Timestamp timestamp = Timestamp.from(Instant.now());
+        sponsor.setModifiedDate(timestamp.toString());
+        sponsor.setModifiedBy(user);
+
         Address sponsorAddress = sponsor.getAddress();
         Address address = addressRepository.findByStreetAndCityAndStateAndZip(sponsorAddress.getStreet(),
                 sponsorAddress.getCity(), sponsorAddress.getState(), sponsorAddress.getZip());
