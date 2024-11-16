@@ -18,7 +18,7 @@ public class Address {
     private Long id;
 
     @Column(name="address")
-    private String address;
+    private String street;
 
     @Column(name="city")
     private String city;
@@ -37,12 +37,12 @@ public class Address {
         this.id = id;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreet(String address) {
+        this.street = address;
     }
 
     public String getCity() {
@@ -73,19 +73,19 @@ public class Address {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Address address1)) return false;
-        return Objects.equals(id, address1.id) && Objects.equals(address, address1.address) && Objects.equals(city, address1.city) && Objects.equals(state, address1.state) && Objects.equals(zip, address1.zip);
+        return Objects.equals(id, address1.id) && Objects.equals(street, address1.street) && Objects.equals(city, address1.city) && Objects.equals(state, address1.state) && Objects.equals(zip, address1.zip);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, city, state, zip);
+        return Objects.hash(id, street, city, state, zip);
     }
 
     @Override
     public String toString() {
         return "Address{" +
                 "id=" + id +
-                ", address='" + address + '\'' +
+                ", address='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip='" + zip + '\'' +

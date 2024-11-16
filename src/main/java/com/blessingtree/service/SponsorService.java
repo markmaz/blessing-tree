@@ -4,11 +4,13 @@ import com.blessingtree.dto.SponsorDTO;
 import com.blessingtree.model.Address;
 import com.blessingtree.model.Sponsor;
 import com.blessingtree.model.User;
+import com.blessingtree.repository.AddressRepository;
 import com.blessingtree.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -18,11 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class SponsorService extends BaseService{
     private final SponsorRepository sponsorRepository;
+    private final AddressRepository addressRepository;
 
     public SponsorService(@Autowired SponsorRepository sponsorRepository,
-                          @Autowired ModelMapper mapper){
+                          @Autowired ModelMapper mapper,
+                          @Autowired AddressRepository addressRepository){
         super(mapper);
         this.sponsorRepository = sponsorRepository;
+        this.addressRepository = addressRepository;
     }
 
     public List<SponsorDTO> getAllSponsors(){
@@ -71,5 +76,19 @@ public class SponsorService extends BaseService{
 
     public Long getCount(){
         return sponsorRepository.count();
+    }
+
+    @Transactional
+    public SponsorDTO createSponsor(Sponsor sponsor){
+        Address sponsorAddress = sponsor.getAddress();
+        Address address = addressRepository.findByStreetAndCityAndStateAndZip(sponsorAddress.getStreet(),
+                sponsorAddress.getCity(), sponsorAddress.getState(), sponsorAddress.getZip());
+
+        if(address == null){
+            address = sponsorAddress;
+        }
+
+        sponsor.setAddress(address);
+        return  modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 }

@@ -4,10 +4,7 @@ import com.blessingtree.dto.EmailDTO;
 import com.blessingtree.model.Address;
 import com.blessingtree.model.Sponsor;
 import com.blessingtree.model.SponsorYear;
-import com.blessingtree.repository.SponsorRepository;
 import org.apache.http.HttpStatus;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,7 +204,7 @@ public class Parser {
         sponsor.setLastName(entityValues.get(LAST_NAME));
 
         Address address = new Address();
-        address.setAddress(entityValues.get(ADDRESS));
+        address.setStreet(entityValues.get(ADDRESS));
         address.setCity(entityValues.get(CITY));
         address.setState(entityValues.get(STATE));
         address.setZip(entityValues.get(ZIP));

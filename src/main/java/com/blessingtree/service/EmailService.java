@@ -4,7 +4,6 @@ import com.blessingtree.dto.EmailDTO;
 import com.blessingtree.model.Address;
 import com.blessingtree.model.Sponsor;
 import com.blessingtree.model.SponsorYear;
-import com.blessingtree.repository.SponsorRepository;
 import org.apache.http.HttpStatus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,7 +32,7 @@ public class EmailService extends BaseService{
     public static final String GENDER_PREFERENCE = "Do you have a preference on the gender of the child that you would like to sponsor?:";
     public static final String HEAR_ABOUT_US = "How did you hear about St. Mary Magdalene’s Blessing Tree Program?:";
     public static final String WANT_TO_VOLUNTEER = "Would you be interested in becoming a volunteer of Magdalene House Social Services?:";
-    private final SponsorRepository sponsorRepository;
+    private final SponsorService sponsorService;
     private static final String[] EMAIL_VALUES = {"*First Name:*", "*Last Name:*", "*Address:*", "*City:*", "*State:*",
             "*Zip:*", "*Email:*", "*Phone Number:*", "*Best Time To Call:*",
             "*Have you sponsored a child/children through The Blessing Tree Program " +
@@ -50,9 +49,9 @@ public class EmailService extends BaseService{
     private static final String EMAIL_SPLIT = "\\*Blessing Tree Sponsor <https://st-mm.com/blessing-tree-sponsor-survey>\\*";
 
     public EmailService(@Autowired ModelMapper mapper,
-                        @Autowired SponsorRepository sponsorRepository){
+                        @Autowired SponsorService sponsorService){
         super(mapper);
-        this.sponsorRepository = sponsorRepository;
+        this.sponsorService = sponsorService;
     }
 
     public int parseBodyAndCreateSponsor(EmailDTO emailDTO){
@@ -67,7 +66,7 @@ public class EmailService extends BaseService{
             nextSibling = nextSibling.replaceAll("<.*?>", "").trim();
             map.put(strongText, nextSibling);
         }
-        sponsorRepository.save(mapSponsor(map));
+        sponsorService.createSponsor(mapSponsor(map));
         return HttpStatus.SC_OK;
     }
 
@@ -77,7 +76,7 @@ public class EmailService extends BaseService{
         sponsor.setLastName(map.get(LAST_NAME));
 
         Address address = new Address();
-        address.setAddress(map.get(ADDRESS));
+        address.setStreet(map.get(ADDRESS));
         address.setCity(map.get(CITY));
         address.setState(map.get(STATE));
         address.setZip(map.get(ZIP));

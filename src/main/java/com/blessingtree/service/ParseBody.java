@@ -6,8 +6,6 @@ import com.blessingtree.model.Sponsor;
 import com.blessingtree.model.SponsorYear;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ParseBody {
     private static String[] values = {"*First Name:*", "*Last Name:*", "*Address:*", "*City:*", "*State:*",
@@ -51,7 +49,7 @@ public class ParseBody {
         sponsor.setLastName(entityValues.get(1));
 
         Address address = new Address();
-        address.setAddress(entityValues.get(2));
+        address.setStreet(entityValues.get(2));
         address.setCity(entityValues.get(3));
         address.setState(entityValues.get(4));
         address.setZip(entityValues.get(5));
