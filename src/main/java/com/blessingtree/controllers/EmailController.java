@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class EmailController extends BaseController{
-    private EmailService emailService;
+    private final EmailService emailService;
 
     public EmailController(@Autowired EmailService emailService){
         this.emailService = emailService;
@@ -20,8 +20,7 @@ public class EmailController extends BaseController{
 
     @PostMapping("/sponsorEmail")
     public ResponseEntity<?> parseEmail(@RequestBody EmailDTO emailDTO){
-        int returnStatus = emailService.createSponsor(emailDTO);
-        return ResponseEntity.status(returnStatus).build();
+        return ResponseEntity.status(emailService.parseBodyAndCreateSponsor(emailDTO)).build();
     }
 
 }

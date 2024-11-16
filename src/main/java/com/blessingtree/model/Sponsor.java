@@ -1,6 +1,8 @@
 package com.blessingtree.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +31,7 @@ public class Sponsor extends AuditRecord {
     private String firstName;
 
     @OneToMany(mappedBy="sponsor", cascade=CascadeType.ALL, orphanRemoval=true)
-    private List<SponsorYear> sponsorYear;
+    private List<SponsorYear> sponsorYear = new ArrayList<>();
 
     @Column(name="phone")
     private String phone;
