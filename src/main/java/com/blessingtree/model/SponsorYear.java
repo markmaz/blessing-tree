@@ -24,7 +24,7 @@ public class SponsorYear extends AuditRecord{
     private Long numberOfChildrenSponsored;
 
     @ManyToOne
-    @JoinColumn(name="sponsor_id")
+    @JoinColumn(name="sponsor_id", nullable = false)
     private Sponsor sponsor;
 
     @Column(name= "child_age_preference")

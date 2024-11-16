@@ -66,7 +66,13 @@ public class EmailService extends BaseService{
             nextSibling = nextSibling.replaceAll("<.*?>", "").trim();
             map.put(strongText, nextSibling);
         }
-        sponsorService.createSponsor(mapSponsor(map));
+        Sponsor sponsor = mapSponsor(map);
+        Sponsor existing = sponsorService.findSponsor(sponsor.getEmail(), sponsor.getFirstName(), sponsor.getLastName());
+
+        if(existing == null) {
+            sponsorService.createSponsor(sponsor);
+        }
+
         return HttpStatus.SC_OK;
     }
 
@@ -84,14 +90,14 @@ public class EmailService extends BaseService{
 
         sponsor.setEmail(map.get(EMAIL));
         sponsor.setPhone(map.get(PHONE_NUMBER));
-        sponsor.setBestTimeToCall(BEST_TIME_TO_CALL);
+        sponsor.setBestTimeToCall(map.get(BEST_TIME_TO_CALL));
         sponsor.setHasSponsoredPreviously(convertToBool(map.get(SPONSORED_PREVIOUSLY)));
 
         SponsorYear sponsorYear = new SponsorYear();
         sponsorYear.setNumberOfChildrenSponsored(Long.valueOf(map.get(HOW_MANY_CHILDREN)));
         sponsorYear.setChildAgePreference(map.get(AGE_PREFERENCE));
         sponsorYear.setGenderPreference(map.get(GENDER_PREFERENCE));
-        sponsor.getSponsorYear().add(sponsorYear);
+        sponsor.addSponsorYear(sponsorYear);
 
         sponsor.setHowDidYouHearAboutUs(map.get(HEAR_ABOUT_US));
         sponsor.setWantToVolunteer(convertToBool(map.get(WANT_TO_VOLUNTEER)));
