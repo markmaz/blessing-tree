@@ -31,16 +31,15 @@ public class Parser {
 
     private static final String[] EMAIL_VALUES = {"*First Name:*", "*Last Name:*", "*Address:*", "*City:*", "*State:*",
             "*Zip:*", "*Email:*", "*Phone Number:*", "*Best Time To Call:*",
-            "*Have you sponsored a child/children through The Blessing Tree Program\n" +
-                    "before?:*",
-            "*This year, each parent has indicated one wish / per child. How many\n" +
+            "*Have you sponsored a child/children through The Blessing Tree Program before?:*",
+            "*This year, each parent has indicated one wish / per child. How many " +
                     "children would you like to sponsor this year?:*",
-            "*Do you have an age preference for the child that you would like to\n" +
+            "*Do you have an age preference for the child that you would like to " +
                     "sponsor?:*",
-            "*Do you have a preference on the gender of the child that you would like to\n" +
+            "*Do you have a preference on the gender of the child that you would like to " +
                     "sponsor?:*",
             "*How did you hear about St. Mary Magdalene’s Blessing Tree Program?:*",
-            "*Would you be interested in becoming a volunteer of Magdalene House Social\n" +
+            "*Would you be interested in becoming a volunteer of Magdalene House Social " +
                     "Services?:*"};
     private static final String EMAIL_SPLIT = "\\*Blessing Tree Sponsor <https://st-mm.com/blessing-tree-sponsor-survey>\\*";
 
@@ -74,9 +73,11 @@ public class Parser {
         return emailDTO;
     }
     public static int parseBodyAndCreateSponsor(EmailDTO emailDTO){
-        String heads = emailDTO.getBody();
+        String heads = emailDTO.getBody().trim();
         //String heads = body[1].trim();
 
+        heads = heads.replaceAll("\n", " ");
+        heads = heads.replaceAll("\r", "");
         List<String> entityValues = new ArrayList<>();
 
         for(int i = 0; i < EMAIL_VALUES.length ; i++){
