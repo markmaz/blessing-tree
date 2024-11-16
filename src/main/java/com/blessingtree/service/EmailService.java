@@ -58,10 +58,10 @@ public class EmailService extends BaseService{
 
         List<String> entityValues = new ArrayList<>();
 
-        for(int i = 0; i < EMAIL_VALUES.length - 1; i++){
+        for(int i = 0; i < EMAIL_VALUES.length; i++){
             String out;
 
-            if (i + 1 <= EMAIL_VALUES.length - 1){
+            if (i < EMAIL_VALUES.length - 1){
                 out = heads.substring(heads.indexOf(EMAIL_VALUES[i]) + EMAIL_VALUES[i].length(), heads.indexOf(EMAIL_VALUES[i + 1])).trim();
             }else{
                 out = heads.substring(heads.indexOf(EMAIL_VALUES[i]) + EMAIL_VALUES[i].length(), heads.length()).trim();
