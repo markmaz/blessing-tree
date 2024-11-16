@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="addresses")
-public class Address {
+public class Address extends AuditRecord{
     public Address() {
     }
     public Address(Long id) {

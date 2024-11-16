@@ -100,6 +100,8 @@ public class SponsorService extends BaseService{
             address = sponsorAddress;
         }
 
+        address.setModifiedBy(user);
+        address.setModifiedDate(timestamp.toString());
         sponsor.setAddress(address);
         sponsor.getSponsorYear().get(0).setModifiedBy(user);
         sponsor.getSponsorYear().get(0).setModifiedDate(timestamp.toString());
