@@ -60,7 +60,7 @@ public class EmailService extends BaseService{
 
         for(int i = 0; i < EMAIL_VALUES.length; i++){
             String out;
-
+            System.out.println("Index: " + i);
             if (i < EMAIL_VALUES.length - 1){
                 out = heads.substring(heads.indexOf(EMAIL_VALUES[i]) + EMAIL_VALUES[i].length(), heads.indexOf(EMAIL_VALUES[i + 1])).trim();
             }else{
