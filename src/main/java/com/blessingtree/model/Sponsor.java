@@ -147,6 +147,15 @@ public class Sponsor extends AuditRecord {
         this.wantToVolunteer = wantToVolunteer;
     }
 
+    public void addSponsorYear(SponsorYear sponsorYear) {
+        this.sponsorYear.add(sponsorYear);
+        sponsorYear.setSponsor(this);
+    }
+
+    public void removeSponsorYear(SponsorYear sponsorYear) {
+        this.sponsorYear.remove(sponsorYear);
+        sponsorYear.setSponsor(null);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

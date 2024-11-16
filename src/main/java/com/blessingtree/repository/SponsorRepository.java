@@ -24,4 +24,6 @@ public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
 
     @Override
     long count();
+
+    Sponsor findByEmailAndFirstNameAndLastName(String email, String firstName, String lastName);
 }
