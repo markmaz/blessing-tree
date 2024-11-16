@@ -56,26 +56,29 @@ public class EmailService extends BaseService{
         String[] body = emailDTO.getBody().split(EMAIL_SPLIT);
         String heads = body[1].trim();
         heads = heads.replaceAll("\r\n|\r|\n", "\n");
-        
+
         List<String> entityValues = new ArrayList<>();
 
         for(int i = 0; i < EMAIL_VALUES.length; i++){
-            String out;
+            String out ="";
 
-            if (i < EMAIL_VALUES.length - 1){
-                out = heads.substring(heads.indexOf(EMAIL_VALUES[i]) + EMAIL_VALUES[i].length(), heads.indexOf(EMAIL_VALUES[i + 1])).trim();
-            }else{
-                out = heads.substring(heads.indexOf(EMAIL_VALUES[i]) + EMAIL_VALUES[i].length(), heads.length()).trim();
+            int startIndex = heads.indexOf(EMAIL_VALUES[i]);
+
+            if (startIndex != -1) { // Only proceed if the start delimiter is found
+                int endIndex = (i < EMAIL_VALUES.length - 1) ? heads.indexOf(EMAIL_VALUES[i + 1]) : heads.length();
+
+                if (endIndex != -1 && endIndex > startIndex) { // Ensure the end index is valid
+                    out = heads.substring(startIndex + EMAIL_VALUES[i].length(), endIndex).trim();
+                } else if (endIndex == -1) {
+                    // If there's no end delimiter, extract the substring till the end of the string
+                    out = heads.substring(startIndex + EMAIL_VALUES[i].length()).trim();
+                }
             }
 
-            if (out.isBlank() || out.isEmpty()){
-                entityValues.add("");
-            }else{
-                entityValues.add(out.replace("\n", " "));
-            }
+            System.out.println(out);
         }
 
-        sponsorRepository.save(mapSponsor(entityValues));
+        //sponsorRepository.save(mapSponsor(entityValues));
         return HttpStatus.SC_OK;
     }
 
