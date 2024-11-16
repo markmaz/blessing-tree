@@ -101,6 +101,8 @@ public class SponsorService extends BaseService{
         }
 
         sponsor.setAddress(address);
+        sponsor.getSponsorYear().get(0).setModifiedBy(user);
+        sponsor.getSponsorYear().get(0).setModifiedDate(timestamp.toString());
         return  modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 }
