@@ -4,7 +4,7 @@ package com.blessingtree.dto;
 import java.util.Objects;
 
 public class AddressDTO {
-    private String address;
+    private String street;
 
     private String city;
 
@@ -12,12 +12,12 @@ public class AddressDTO {
 
     private String zip;
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getCity() {
@@ -48,18 +48,18 @@ public class AddressDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AddressDTO that)) return false;
-        return Objects.equals(address, that.address) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zip, that.zip);
+        return Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zip, that.zip);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(address, city, state, zip);
+        return Objects.hash(street, city, state, zip);
     }
 
     @Override
     public String toString() {
         return "AddressDTO{" +
-                "address='" + address + '\'' +
+                "address='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip='" + zip + '\'' +
