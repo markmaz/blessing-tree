@@ -27,6 +27,9 @@ public class SponsorYear extends AuditRecord{
     @JoinColumn(name="sponsor_id")
     private Sponsor sponsor;
 
+    @Column(name= "child_age_preference")
+    private String childAgePreference;
+
     public Long getId() {
         return id;
     }
@@ -59,16 +62,32 @@ public class SponsorYear extends AuditRecord{
         this.numberOfChildrenSponsored = numberOfChildrenSponsored;
     }
 
+    public Sponsor getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(Sponsor sponsor) {
+        this.sponsor = sponsor;
+    }
+
+    public String getChildAgePreference() {
+        return childAgePreference;
+    }
+
+    public void setChildAgePreference(String childAgePreference) {
+        this.childAgePreference = childAgePreference;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SponsorYear that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(genderPreference, that.genderPreference) && Objects.equals(year, that.year) && Objects.equals(numberOfChildrenSponsored, that.numberOfChildrenSponsored) ;
+        return Objects.equals(id, that.id) && Objects.equals(genderPreference, that.genderPreference) && Objects.equals(year, that.year) && Objects.equals(numberOfChildrenSponsored, that.numberOfChildrenSponsored) && Objects.equals(sponsor, that.sponsor) && Objects.equals(childAgePreference, that.childAgePreference);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, genderPreference, year, numberOfChildrenSponsored);
+        return Objects.hash(id, genderPreference, year, numberOfChildrenSponsored, sponsor, childAgePreference);
     }
 
     @Override
@@ -77,6 +96,9 @@ public class SponsorYear extends AuditRecord{
                 "id=" + id +
                 ", genderPreference='" + genderPreference + '\'' +
                 ", year=" + year +
+                ", numberOfChildrenSponsored=" + numberOfChildrenSponsored +
+                ", sponsor=" + sponsor +
+                ", childAgePreference='" + childAgePreference + '\'' +
                 '}';
     }
 }
