@@ -54,8 +54,9 @@ public class EmailService extends BaseService{
 
     public int parseBodyAndCreateSponsor(EmailDTO emailDTO){
         String[] body = emailDTO.getBody().split(EMAIL_SPLIT);
-        String heads = body[1].trim().replaceAll("\r", "");
-
+        String heads = body[1].trim();
+        heads = heads.replaceAll("\r\n|\r|\n", "\n");
+        
         List<String> entityValues = new ArrayList<>();
 
         for(int i = 0; i < EMAIL_VALUES.length; i++){
