@@ -5,6 +5,7 @@ import com.blessingtree.model.Address;
 import com.blessingtree.model.Sponsor;
 import com.blessingtree.model.User;
 import com.blessingtree.repository.AddressRepository;
+import com.blessingtree.repository.GiftRepository;
 import com.blessingtree.repository.SponsorRepository;
 import com.blessingtree.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,15 +27,18 @@ public class SponsorService extends BaseService{
     private final AddressRepository addressRepository;
 
     private final UserRepository userRepository;
+    private final GiftService giftService;
 
     public SponsorService(@Autowired SponsorRepository sponsorRepository,
                           @Autowired ModelMapper mapper,
                           @Autowired AddressRepository addressRepository,
-                          @Autowired UserRepository userRepository){
+                          @Autowired UserRepository userRepository,
+                          @Autowired GiftService giftService){
         super(mapper);
         this.sponsorRepository = sponsorRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
+        this.giftService = giftService;
     }
 
     public List<SponsorDTO> getAllSponsors(){
@@ -45,6 +49,14 @@ public class SponsorService extends BaseService{
     }
 
     public void deleteSponsor(Long id){
+        Sponsor sponsor = sponsorRepository.findById(id).orElse(null);
+
+        if(sponsor != null){
+            sponsor.getGifts().forEach(gift -> {
+                giftService.removeGiftFromSponsor(gift.getId(), sponsor.getId());
+            });
+        }
+
         sponsorRepository.deleteById(id);
     }
 
