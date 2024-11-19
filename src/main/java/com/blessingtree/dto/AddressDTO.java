@@ -1,9 +1,13 @@
 package com.blessingtree.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Objects;
 
 public class AddressDTO {
+    private Long id;
+
     private String street;
 
     private String city;
@@ -44,22 +48,31 @@ public class AddressDTO {
         this.zip = zip;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AddressDTO that)) return false;
-        return Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zip, that.zip);
+        return Objects.equals(id, that.id) && Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zip, that.zip);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(street, city, state, zip);
+        return Objects.hash(id, street, city, state, zip);
     }
 
     @Override
     public String toString() {
         return "AddressDTO{" +
-                "address='" + street + '\'' +
+                "id=" + id +
+                ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip='" + zip + '\'' +

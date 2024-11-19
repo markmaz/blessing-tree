@@ -24,3 +24,4 @@ public class EmailController extends BaseController{
     }
 
 }
+

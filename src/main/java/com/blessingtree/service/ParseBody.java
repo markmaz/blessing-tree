@@ -58,11 +58,11 @@ public class ParseBody {
         sponsor.setPhone(entityValues.get(7));
         sponsor.setBestTimeToCall(entityValues.get(8));
         sponsor.setHasSponsoredPreviously(false); //9
-        SponsorYear sponsorYear = new SponsorYear();
-        sponsorYear.setNumberOfChildrenSponsored(Long.valueOf(entityValues.get(10)));
-        sponsorYear.setChildAgePreference(entityValues.get(11));
-        sponsorYear.setGenderPreference(entityValues.get(12));
-        sponsor.getSponsorYear().add(sponsorYear);
+//        SponsorYear sponsorYear = new SponsorYear();
+//        sponsorYear.setNumberOfChildrenSponsored(Long.valueOf(entityValues.get(10)));
+//        sponsorYear.setChildAgePreference(entityValues.get(11));
+//        sponsorYear.setGenderPreference(entityValues.get(12));
+//        sponsor.getSponsorYear().add(sponsorYear);
         sponsor.setHowDidYouHearAboutUs(entityValues.get(13));
         sponsor.setWantToVolunteer(false); //14
 

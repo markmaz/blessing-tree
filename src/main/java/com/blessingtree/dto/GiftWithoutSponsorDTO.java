@@ -1,28 +1,11 @@
 package com.blessingtree.dto;
 
-public class TopGiftDTO {
+public class GiftWithoutSponsorDTO {
     private Long id;
     private String description;
     private String size;
     private String status;
     private SimpleChildDTO child;
-    private SimpleSponsorDTO sponsor;
-
-    public SimpleChildDTO getChild() {
-        return child;
-    }
-
-    public void setChild(SimpleChildDTO child) {
-        this.child = child;
-    }
-
-    public SimpleSponsorDTO getSponsor() {
-        return sponsor;
-    }
-
-    public void setSponsor(SimpleSponsorDTO sponsor) {
-        this.sponsor = sponsor;
-    }
 
     public Long getId() {
         return id;
@@ -54,5 +37,13 @@ public class TopGiftDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public SimpleChildDTO getChild() {
+        return child;
+    }
+
+    public void setChild(SimpleChildDTO child) {
+        this.child = child;
     }
 }

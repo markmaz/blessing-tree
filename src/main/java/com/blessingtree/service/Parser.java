@@ -215,11 +215,11 @@ public class Parser {
         sponsor.setBestTimeToCall(entityValues.get(BEST_TIME_TO_CALL));
         sponsor.setHasSponsoredPreviously(convertToBool(entityValues.get(HAS_SPONSORED_PREVIOUSLY)));
 
-        SponsorYear sponsorYear = new SponsorYear();
-        sponsorYear.setNumberOfChildrenSponsored(Long.valueOf(entityValues.get(NUMBER_OF_CHILDREN)));
-        sponsorYear.setChildAgePreference(entityValues.get(CHILD_AGE_PREFERENCE));
-        sponsorYear.setGenderPreference(entityValues.get(GENDER_PREFERENCE));
-        sponsor.getSponsorYear().add(sponsorYear);
+//        SponsorYear sponsorYear = new SponsorYear();
+//        sponsorYear.setNumberOfChildrenSponsored(Long.valueOf(entityValues.get(NUMBER_OF_CHILDREN)));
+//        sponsorYear.setChildAgePreference(entityValues.get(CHILD_AGE_PREFERENCE));
+//        sponsorYear.setGenderPreference(entityValues.get(GENDER_PREFERENCE));
+//        sponsor.getSponsorYear().add(sponsorYear);
 
         sponsor.setHowDidYouHearAboutUs(entityValues.get(HEAR_ABOUT_US));
         sponsor.setWantToVolunteer(convertToBool(entityValues.get(WANT_TO_VOLUNTEER)));

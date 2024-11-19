@@ -1,6 +1,7 @@
 package com.blessingtree.dto;
 
 import com.blessingtree.model.SponsorYear;
+import jakarta.persistence.Column;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import java.util.Objects;
 public class SponsorDTO {
     private Long id;
     private AddressDTO address;
-    private List<GiftDTO> gifts;
+    private List<GiftWithoutSponsorDTO> gifts;
     private String lastName;
     private String firstName;
     private List<SponsorYearDTO> sponsorYear;
@@ -18,6 +19,9 @@ public class SponsorDTO {
     private Boolean hasSponsoredPreviously;
     private String howDidYouHearAboutUs;
     private Boolean wantToVolunteer;
+    private String childAgePreference;
+    private String genderPreference;
+    private Integer numberOfChildrenSponsored;
 
     public Long getId() {
         return id;
@@ -35,11 +39,11 @@ public class SponsorDTO {
         this.address = address;
     }
 
-    public List<GiftDTO> getGifts() {
+    public List<GiftWithoutSponsorDTO> getGifts() {
         return gifts;
     }
 
-    public void setGifts(List<GiftDTO> gifts) {
+    public void setGifts(List<GiftWithoutSponsorDTO> gifts) {
         this.gifts = gifts;
     }
 
@@ -115,16 +119,40 @@ public class SponsorDTO {
         this.wantToVolunteer = wantToVolunteer;
     }
 
+    public String getChildAgePreference() {
+        return childAgePreference;
+    }
+
+    public void setChildAgePreference(String childAgePreference) {
+        this.childAgePreference = childAgePreference;
+    }
+
+    public String getGenderPreference() {
+        return genderPreference;
+    }
+
+    public void setGenderPreference(String genderPreference) {
+        this.genderPreference = genderPreference;
+    }
+
+    public Integer getNumberOfChildrenSponsored() {
+        return numberOfChildrenSponsored;
+    }
+
+    public void setNumberOfChildrenSponsored(Integer numberOfChildrenSponsored) {
+        this.numberOfChildrenSponsored = numberOfChildrenSponsored;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SponsorDTO that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(gifts, that.gifts) && Objects.equals(lastName, that.lastName) && Objects.equals(firstName, that.firstName) && Objects.equals(sponsorYear, that.sponsorYear) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(bestTimeToCall, that.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, that.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, that.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, that.wantToVolunteer);
+        return numberOfChildrenSponsored == that.numberOfChildrenSponsored && Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(gifts, that.gifts) && Objects.equals(lastName, that.lastName) && Objects.equals(firstName, that.firstName) && Objects.equals(sponsorYear, that.sponsorYear) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(bestTimeToCall, that.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, that.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, that.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, that.wantToVolunteer) && Objects.equals(childAgePreference, that.childAgePreference) && Objects.equals(genderPreference, that.genderPreference);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer);
+        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored);
     }
 
     @Override
@@ -142,6 +170,9 @@ public class SponsorDTO {
                 ", hasSponsoredPreviously=" + hasSponsoredPreviously +
                 ", howDidYouHearAboutUs='" + howDidYouHearAboutUs + '\'' +
                 ", wantToVolunteer=" + wantToVolunteer +
+                ", childAgePreference='" + childAgePreference + '\'' +
+                ", genderPreference='" + genderPreference + '\'' +
+                ", numberOfChildrenSponsored=" + numberOfChildrenSponsored +
                 '}';
     }
 }

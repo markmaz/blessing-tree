@@ -12,8 +12,6 @@ public class ChildDTO {
 
     private List<GiftDTO> gifts;
 
-    private SponsorDTO sponsor;
-
     public ChildDTO(){}
 
     public ChildDTO(Long id, List<GiftDTO> gifts, String age, String gender){
@@ -55,24 +53,16 @@ public class ChildDTO {
         this.gender = gender;
     }
 
-    public SponsorDTO getSponsor() {
-        return sponsor;
-    }
-
-    public void setSponsor(SponsorDTO sponsor) {
-        this.sponsor = sponsor;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ChildDTO childDTO)) return false;
-        return Objects.equals(id, childDTO.id) && Objects.equals(age, childDTO.age) && Objects.equals(gender, childDTO.gender) && Objects.equals(gifts, childDTO.gifts) && Objects.equals(sponsor, childDTO.sponsor);
+        return Objects.equals(id, childDTO.id) && Objects.equals(age, childDTO.age) && Objects.equals(gender, childDTO.gender) && Objects.equals(gifts, childDTO.gifts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, age, gender, gifts, sponsor);
+        return Objects.hash(id, age, gender, gifts);
     }
 
     @Override
@@ -82,7 +72,6 @@ public class ChildDTO {
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", gifts=" + gifts +
-                ", sponsor=" + sponsor +
                 '}';
     }
 }

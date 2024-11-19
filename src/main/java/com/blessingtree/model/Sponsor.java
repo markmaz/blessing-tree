@@ -16,12 +16,11 @@ public class Sponsor extends AuditRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany
-    @JoinColumn(name="sponsor_id")
+    @OneToMany(mappedBy = "sponsor", fetch = FetchType.LAZY)
     private List<Gift> gifts;
 
     @Column(name="last_name")
@@ -30,8 +29,8 @@ public class Sponsor extends AuditRecord {
     @Column(name="first_name")
     private String firstName;
 
-    @OneToMany(mappedBy="sponsor", cascade=CascadeType.ALL, orphanRemoval=true)
-    private List<SponsorYear> sponsorYear = new ArrayList<>();
+//    @OneToMany(mappedBy="sponsor", cascade=CascadeType.ALL, orphanRemoval=true)
+//    private List<SponsorYear> sponsorYear = new ArrayList<>();
 
     @Column(name="phone")
     private String phone;
@@ -50,6 +49,15 @@ public class Sponsor extends AuditRecord {
 
     @Column(name="want_to_volunteer")
     private Boolean wantToVolunteer;
+
+    @Column(name="child_age_preference")
+    private String childAgePreference;
+
+    @Column(name="gender_preference")
+    private String genderPreference;
+
+    @Column(name="number_of_children_sponsored")
+    private Integer numberOfChildrenSponsored = 0;
 
     public Long getId() {
         return id;
@@ -89,14 +97,6 @@ public class Sponsor extends AuditRecord {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public List<SponsorYear> getSponsorYear() {
-        return sponsorYear;
-    }
-
-    public void setSponsorYear(List<SponsorYear> sponsorYear) {
-        this.sponsorYear = sponsorYear;
     }
 
     public String getPhone() {
@@ -147,25 +147,50 @@ public class Sponsor extends AuditRecord {
         this.wantToVolunteer = wantToVolunteer;
     }
 
-    public void addSponsorYear(SponsorYear sponsorYear) {
-        this.sponsorYear.add(sponsorYear);
-        sponsorYear.setSponsor(this);
+    public String getChildAgePreference() {
+        return childAgePreference;
     }
 
-    public void removeSponsorYear(SponsorYear sponsorYear) {
-        this.sponsorYear.remove(sponsorYear);
-        sponsorYear.setSponsor(null);
+    public void setChildAgePreference(String childAgePreference) {
+        this.childAgePreference = childAgePreference;
     }
+
+    public String getGenderPreference() {
+        return genderPreference;
+    }
+
+    public void setGenderPreference(String genderPreference) {
+        this.genderPreference = genderPreference;
+    }
+
+    public Integer getNumberOfChildrenSponsored() {
+        return numberOfChildrenSponsored;
+    }
+
+    public void setNumberOfChildrenSponsored(Integer numberOfChildrenSponsored) {
+        this.numberOfChildrenSponsored = numberOfChildrenSponsored;
+    }
+
+//    public void addSponsorYear(SponsorYear sponsorYear) {
+//        this.sponsorYear.add(sponsorYear);
+//        sponsorYear.setSponsor(this);
+//    }
+//
+//    public void removeSponsorYear(SponsorYear sponsorYear) {
+//        this.sponsorYear.remove(sponsorYear);
+//        sponsorYear.setSponsor(null);
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Sponsor sponsor)) return false;
-        return Objects.equals(id, sponsor.id) && Objects.equals(address, sponsor.address) && Objects.equals(gifts, sponsor.gifts) && Objects.equals(lastName, sponsor.lastName) && Objects.equals(firstName, sponsor.firstName) && Objects.equals(sponsorYear, sponsor.sponsorYear) && Objects.equals(phone, sponsor.phone) && Objects.equals(email, sponsor.email) && Objects.equals(bestTimeToCall, sponsor.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, sponsor.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, sponsor.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, sponsor.wantToVolunteer);
+        return numberOfChildrenSponsored == sponsor.numberOfChildrenSponsored && Objects.equals(id, sponsor.id) && Objects.equals(address, sponsor.address) && Objects.equals(gifts, sponsor.gifts) && Objects.equals(lastName, sponsor.lastName) && Objects.equals(firstName, sponsor.firstName)  && Objects.equals(phone, sponsor.phone) && Objects.equals(email, sponsor.email) && Objects.equals(bestTimeToCall, sponsor.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, sponsor.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, sponsor.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, sponsor.wantToVolunteer) && Objects.equals(childAgePreference, sponsor.childAgePreference) && Objects.equals(genderPreference, sponsor.genderPreference);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer);
+        return Objects.hash(id, address, gifts, lastName, firstName, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored);
     }
 
     @Override
@@ -176,13 +201,15 @@ public class Sponsor extends AuditRecord {
                 ", gifts=" + gifts +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
-                ", sponsorYear=" + sponsorYear +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", bestTimeToCall='" + bestTimeToCall + '\'' +
                 ", hasSponsoredPreviously=" + hasSponsoredPreviously +
                 ", howDidYouHearAboutUs='" + howDidYouHearAboutUs + '\'' +
                 ", wantToVolunteer=" + wantToVolunteer +
+                ", childAgePreference='" + childAgePreference + '\'' +
+                ", genderPreference='" + genderPreference + '\'' +
+                ", numberOfChildrenSponsored=" + numberOfChildrenSponsored +
                 '}';
     }
 }

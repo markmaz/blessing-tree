@@ -1,24 +1,28 @@
 package com.blessingtree.service;
 
 import com.blessingtree.dto.GiftDTO;
+import com.blessingtree.dto.ParentDTO;
 import com.blessingtree.dto.TopGiftDTO;
 import com.blessingtree.dto.TopTenDTO;
 import com.blessingtree.exceptions.ResourceNotFoundException;
-import com.blessingtree.model.Child;
-import com.blessingtree.model.Gift;
-import com.blessingtree.model.User;
+import com.blessingtree.model.*;
 import com.blessingtree.repository.ChildRepository;
 import com.blessingtree.repository.GiftRepository;
+import com.blessingtree.repository.ParentRepository;
+import com.blessingtree.repository.SponsorRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Query;
+import org.apache.http.HttpStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Arrays;
@@ -32,14 +36,26 @@ public class GiftService extends BaseService{
     private final ChildRepository childRepository;
     private final EntityManager entityManager;
 
+    private final ParentRepository parentRepository;
+
+    private DataSource dataSource;
+
+    private final SponsorRepository sponsorRepository;
+
     public GiftService(@Autowired ModelMapper mapper,
                        @Autowired GiftRepository giftRepository,
                        @Autowired ChildRepository childRepository,
-                       @Autowired EntityManager entityManager) {
+                       @Autowired EntityManager entityManager,
+                       @Autowired SponsorRepository sponsorRepository,
+                       @Autowired DataSource dataSource,
+                       @Autowired ParentRepository parentRepository) {
         super(mapper);
         this.giftRepository = giftRepository;
         this.childRepository = childRepository;
         this.entityManager = entityManager;
+        this.sponsorRepository = sponsorRepository;
+        this.dataSource =dataSource;
+        this.parentRepository= parentRepository;
     }
 
     public GiftDTO saveGift(Long childID, GiftDTO giftDTO, User loggedInUser){
@@ -57,6 +73,14 @@ public class GiftService extends BaseService{
             throw new ResourceNotFoundException("Child not found with ID: " + childID);
         }
 
+    }
+
+    public GiftDTO sponsorGift(Long giftID, Long sponsorID){
+        Gift gift = giftRepository.findById(giftID).orElseThrow(() -> new RuntimeException("Gift not found"));
+        Sponsor sponsor = sponsorRepository.findById(sponsorID).orElseThrow(() -> new RuntimeException("Sponsor not found"));
+
+        gift.setSponsor(sponsor);
+        return modelMapper.map(giftRepository.save(gift), GiftDTO.class);
     }
 
     public void deleteGift(Long id){
@@ -100,6 +124,26 @@ public class GiftService extends BaseService{
         return modelMapper.map(giftRepository.save(gift), GiftDTO.class);
     }
 
+    public List<ParentDTO> getGiftsByFamily(){
+        Sort sort = Sort.by(Sort.Order.asc("lastName"));
+        return parentRepository.findAll(sort)
+                .stream()
+                .map(parent -> convertToDTO(parent, ParentDTO.class))
+                .collect(Collectors.toList());
+
+//        return giftRepository.findGiftsGroupedByFamily()
+//                .stream()
+//                .map(gift -> convertToDTO(gift, TopGiftDTO.class))
+//                .collect(Collectors.toList());
+    }
+
+    public List<ParentDTO> getUnsponsoredGiftsByFamily(){
+        return parentRepository.findParentsWithUnsponsoredGifts()
+                .stream()
+                .map(parent -> convertToDTO(parent, ParentDTO.class))
+                .collect(Collectors.toList());
+    }
+
     public List<TopGiftDTO> getAllGifts(){
         return giftRepository.findAll()
                 .stream()
@@ -137,4 +181,21 @@ public class GiftService extends BaseService{
                 .map(result -> new TopTenDTO(result[0].toString(), ((Number) result[1]).longValue()))
                 .collect(Collectors.toList());
     }
+
+    public int removeGiftFromSponsor(Long giftID, Long sponsorID) {
+        Gift gift = giftRepository.findById(giftID).orElse(null);
+
+        if(gift == null){
+            return HttpStatus.SC_NOT_FOUND;
+        }
+
+        if(gift.getSponsor().getId().longValue() == sponsorID) {
+            gift.setSponsor(null);
+            giftRepository.save(gift);
+            return HttpStatus.SC_OK;
+        }else {
+            return HttpStatus.SC_NOT_FOUND;
+        }
+    }
+
 }
