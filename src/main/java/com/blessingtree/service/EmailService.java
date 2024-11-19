@@ -93,11 +93,15 @@ public class EmailService extends BaseService{
         sponsor.setBestTimeToCall(map.get(BEST_TIME_TO_CALL));
         sponsor.setHasSponsoredPreviously(convertToBool(map.get(SPONSORED_PREVIOUSLY)));
 
-        SponsorYear sponsorYear = new SponsorYear();
-        sponsorYear.setNumberOfChildrenSponsored(Long.valueOf(map.get(HOW_MANY_CHILDREN)));
-        sponsorYear.setChildAgePreference(map.get(AGE_PREFERENCE));
-        sponsorYear.setGenderPreference(map.get(GENDER_PREFERENCE));
-        sponsor.addSponsorYear(sponsorYear);
+        sponsor.setNumberOfChildrenSponsored(Integer.parseInt(map.get(HOW_MANY_CHILDREN)));
+        sponsor.setGenderPreference(map.get(GENDER_PREFERENCE));
+        sponsor.setChildAgePreference(map.get(AGE_PREFERENCE));
+
+//        SponsorYear sponsorYear = new SponsorYear();
+//        sponsorYear.setNumberOfChildrenSponsored(Long.valueOf(map.get(HOW_MANY_CHILDREN)));
+//        sponsorYear.setChildAgePreference(map.get(AGE_PREFERENCE));
+//        sponsorYear.setGenderPreference(map.get(GENDER_PREFERENCE));
+//        sponsor.addSponsorYear(sponsorYear);
 
         sponsor.setHowDidYouHearAboutUs(map.get(HEAR_ABOUT_US));
         sponsor.setWantToVolunteer(convertToBool(map.get(WANT_TO_VOLUNTEER)));

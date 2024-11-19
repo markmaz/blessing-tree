@@ -6,6 +6,7 @@ public class SponsorYearDTO {
     private String genderPreference;
     private Long year;
     private Long numberOfChildrenSponsored;
+    private Long id;
 
     public String getGenderPreference() {
         return genderPreference;
@@ -31,16 +32,24 @@ public class SponsorYearDTO {
         this.numberOfChildrenSponsored = numberOfChildrenSponsored;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SponsorYearDTO that)) return false;
-        return Objects.equals(genderPreference, that.genderPreference) && Objects.equals(year, that.year) && Objects.equals(numberOfChildrenSponsored, that.numberOfChildrenSponsored);
+        return Objects.equals(genderPreference, that.genderPreference) && Objects.equals(year, that.year) && Objects.equals(numberOfChildrenSponsored, that.numberOfChildrenSponsored) && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(genderPreference, year, numberOfChildrenSponsored);
+        return Objects.hash(genderPreference, year, numberOfChildrenSponsored, id);
     }
 
     @Override
@@ -49,6 +58,7 @@ public class SponsorYearDTO {
                 "genderPreference='" + genderPreference + '\'' +
                 ", year=" + year +
                 ", numberOfChildrenSponsored=" + numberOfChildrenSponsored +
+                ", id=" + id +
                 '}';
     }
 }

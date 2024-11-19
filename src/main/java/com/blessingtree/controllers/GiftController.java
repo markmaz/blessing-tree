@@ -1,13 +1,11 @@
 package com.blessingtree.controllers;
 
-import com.blessingtree.dto.CountDTO;
-import com.blessingtree.dto.GiftDTO;
-import com.blessingtree.dto.TopGiftDTO;
-import com.blessingtree.dto.TopTenDTO;
+import com.blessingtree.dto.*;
 import com.blessingtree.service.GiftService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +39,8 @@ public class GiftController extends BaseController{
     }
 
     @GetMapping("/gifts")
-    public List<TopGiftDTO> getGifts(){
-        return giftService.getAllGifts();
+    public List<ParentDTO> getGifts(){
+        return giftService.getGiftsByFamily();
     }
 
     @GetMapping("/gifts/count")
@@ -53,14 +51,23 @@ public class GiftController extends BaseController{
     }
 
     @GetMapping("/gifts/unsponsored")
-    public Page<TopGiftDTO> getUnsponsoredGifts(@RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size){
-        return giftService.getAllUnsponsoredGifts(page, size);
+    public List<ParentDTO> getUnsponsoredGifts(){
+        return giftService.getUnsponsoredGiftsByFamily();
     }
 
     @GetMapping("/gifts/top-ten")
     public List<TopTenDTO> getTopTen(@RequestParam(defaultValue = "M") String gender,
                                      @RequestParam(defaultValue = "10") String limit){
         return giftService.getTopTen(gender, limit);
+    }
+
+    @PostMapping("/gifts/{giftID}/sponsors/{sponsorID}")
+    public GiftDTO sponsorGift(@PathVariable Long giftID, @PathVariable Long sponsorID){
+        return giftService.sponsorGift(giftID, sponsorID);
+    }
+
+    @DeleteMapping("/gifts/{giftID}/sponsors/{sponsorID}")
+    public ResponseEntity<?> unsponsorGift(@PathVariable Long giftID, @PathVariable Long sponsorID){
+        return ResponseEntity.status(giftService.removeGiftFromSponsor(giftID, sponsorID)).build();
     }
 }

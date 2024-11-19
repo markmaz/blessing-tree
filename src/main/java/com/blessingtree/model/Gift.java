@@ -28,7 +28,7 @@ public class Gift extends AuditRecord{
     private Child child;
 
     @ManyToOne
-    @JoinColumn(name="sponsor_id")
+    @JoinColumn(name="sponsor_id", nullable = true)
     private Sponsor sponsor;
 
     public Long getId() {

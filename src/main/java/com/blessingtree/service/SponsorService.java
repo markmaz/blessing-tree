@@ -55,6 +55,17 @@ public class SponsorService extends BaseService{
         sponsor.setModifiedDate(timestamp.toString());
         sponsor.setModifiedBy(user);
 
+        sponsor.getAddress().setModifiedBy(user);
+        sponsor.getAddress().setModifiedDate(timestamp.toString());
+
+//        if(sponsor.getSponsorYear() != null){
+//            sponsor.getSponsorYear().forEach(sponsorYear -> {
+//                sponsorYear.setModifiedBy(user);
+//                sponsorYear.setModifiedDate(timestamp.toString());
+//            });
+//        }
+
+
         return modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 
@@ -68,7 +79,21 @@ public class SponsorService extends BaseService{
         sponsor.setModifiedBy(user);
         Timestamp timestamp = Timestamp.from(Instant.now());
         sponsor.setModifiedDate(timestamp.toString());
-        sponsor.setAddress(modelMapper.map(sponsorDTO.getAddress(), Address.class));
+
+        Address address = addressRepository.findById(sponsor.getAddress().getId()).orElse(null);
+
+        if(address == null){
+            sponsor.setAddress(modelMapper.map(sponsorDTO.getAddress(), Address.class));
+            sponsor.getAddress().setModifiedDate(timestamp.toString());
+            sponsor.getAddress().setModifiedBy(user);
+        }else{
+            address.setZip(sponsorDTO.getAddress().getZip());
+            address.setCity(sponsorDTO.getAddress().getCity());
+            address.setState(sponsorDTO.getAddress().getState());
+            address.setStreet(sponsorDTO.getAddress().getStreet());
+            sponsor.setAddress(address);
+        }
+
         sponsor.setHasSponsoredPreviously(sponsorDTO.getHasSponsoredPreviously());
         sponsor.setBestTimeToCall(sponsorDTO.getBestTimeToCall());
         sponsor.setEmail(sponsorDTO.getEmail());
@@ -98,13 +123,12 @@ public class SponsorService extends BaseService{
 
         if(address == null){
             address = sponsorAddress;
+            address.setModifiedBy(user);
+            address.setModifiedDate(timestamp.toString());
         }
 
-        address.setModifiedBy(user);
-        address.setModifiedDate(timestamp.toString());
         sponsor.setAddress(address);
-        sponsor.getSponsorYear().get(0).setModifiedBy(user);
-        sponsor.getSponsorYear().get(0).setModifiedDate(timestamp.toString());
+
         return  modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 

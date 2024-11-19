@@ -6,7 +6,7 @@ public class GiftDTO {
     private Long id;
     private String description;
 
-    //private SponsorDTO sponsor;
+    private SimpleSponsorDTO sponsor;
     private String size;
     private String status;
 
@@ -26,13 +26,13 @@ public class GiftDTO {
         this.description = description;
     }
 
-//    public SponsorDTO getSponsor() {
-//        return sponsor;
-//    }
-//
-//    public void setSponsor(SponsorDTO sponsor) {
-//        this.sponsor = sponsor;
-//    }
+    public SimpleSponsorDTO getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(SimpleSponsorDTO sponsor) {
+        this.sponsor = sponsor;
+    }
 
     public String getSize() {
         return size;
