@@ -1,16 +1,17 @@
 package com.blessingtree.service;
 
+import com.blessingtree.dto.CallLogDTO;
 import com.blessingtree.dto.SponsorDTO;
 import com.blessingtree.model.Address;
+import com.blessingtree.model.CallLog;
 import com.blessingtree.model.Sponsor;
 import com.blessingtree.model.User;
-import com.blessingtree.repository.AddressRepository;
-import com.blessingtree.repository.GiftRepository;
-import com.blessingtree.repository.SponsorRepository;
-import com.blessingtree.repository.UserRepository;
+import com.blessingtree.repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import org.aspectj.weaver.ast.Call;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class SponsorService extends BaseService{
     public static final String SYSTEM_USER = "mmaslako";
     private final SponsorRepository sponsorRepository;
     private final AddressRepository addressRepository;
-
+    private final CallLogRepository callLogRepository;
     private final UserRepository userRepository;
     private final GiftService giftService;
 
@@ -33,16 +34,19 @@ public class SponsorService extends BaseService{
                           @Autowired ModelMapper mapper,
                           @Autowired AddressRepository addressRepository,
                           @Autowired UserRepository userRepository,
-                          @Autowired GiftService giftService){
+                          @Autowired GiftService giftService,
+                          @Autowired CallLogRepository callLogRepository){
         super(mapper);
         this.sponsorRepository = sponsorRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.giftService = giftService;
+        this.callLogRepository = callLogRepository;
     }
 
     public List<SponsorDTO> getAllSponsors(){
-        return sponsorRepository.findAll()
+        Sort sort = Sort.by("lastName", "firstName").ascending();
+        return sponsorRepository.findAll(sort)
                 .stream()
                 .map(sponsor -> convertToDTO(sponsor, SponsorDTO.class))
                 .collect(Collectors.toList());
@@ -139,6 +143,7 @@ public class SponsorService extends BaseService{
             address.setModifiedDate(timestamp.toString());
         }
 
+
         sponsor.setAddress(address);
 
         return  modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
@@ -146,5 +151,17 @@ public class SponsorService extends BaseService{
 
     public Sponsor findSponsor(String email, String firstName, String lastName){
         return sponsorRepository.findByEmailAndFirstNameAndLastName(email, firstName, lastName);
+    }
+
+    public CallLogDTO addLogEntry(Long id, CallLogDTO logEntry) {
+        Sponsor sponsor = sponsorRepository.findById(id).orElseThrow(() -> new RuntimeException("Missing sponsor"));
+        CallLog log = modelMapper.map(logEntry, CallLog.class);
+        log.setSponsor(sponsor);
+
+        return modelMapper.map(callLogRepository.save(log), CallLogDTO.class);
+    }
+
+    public void removeLogEntry(Long id, Long entryID) {
+        callLogRepository.deleteById(entryID);
     }
 }
