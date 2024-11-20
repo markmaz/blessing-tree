@@ -1,5 +1,6 @@
 package com.blessingtree.controllers;
 
+import com.blessingtree.dto.CallLogDTO;
 import com.blessingtree.dto.CountDTO;
 import com.blessingtree.dto.SponsorDTO;
 import com.blessingtree.service.SponsorService;
@@ -47,6 +48,16 @@ public class SponsorController extends BaseController{
         CountDTO countDTO = new CountDTO();
         countDTO.setCount(sponsorService.getCount());
         return countDTO;
+    }
+
+    @PostMapping("/sponsors/{id}/logEntries")
+    public CallLogDTO addLogEntry(@PathVariable Long id, @RequestBody CallLogDTO logEntry){
+        return sponsorService.addLogEntry(id, logEntry);
+    }
+
+    @DeleteMapping("/sponsor/{id}/logEntries/{entryID}")
+    public void removeLogEntry(@PathVariable Long id, @PathVariable Long entryID){
+        sponsorService.removeLogEntry(id, entryID);
     }
 }
 

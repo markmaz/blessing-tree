@@ -32,7 +32,7 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
         FROM Parent p
         JOIN p.children c
         JOIN c.gifts g
-        WHERE g.sponsor IS NULL ORDER BY p.lastName, p.firstName
+        WHERE g.sponsor IS NULL ORDER BY p.btid
         """)
     List<Parent> findParentsWithUnsponsoredGifts();
 }
