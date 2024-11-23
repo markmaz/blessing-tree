@@ -139,6 +139,20 @@ public class ParentService extends BaseService{
         return HttpStatus.SC_OK;
     }
 
+    public List<ParentDTO> findUnsponsoredChildren(){
+        List<Parent> parents = parentRepository.findUnsponsoredChildren();
+
+        parents.forEach(parent ->
+                parent.getChildren().forEach(child -> child.getGifts().clear())
+        );
+
+        return parents
+                .stream()
+                .map(parent -> convertToDTO(parent, ParentDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
     public Long getCount(){
         return parentRepository.count();
     }

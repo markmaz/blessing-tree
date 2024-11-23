@@ -130,11 +130,6 @@ public class GiftService extends BaseService{
                 .stream()
                 .map(parent -> convertToDTO(parent, ParentDTO.class))
                 .collect(Collectors.toList());
-
-//        return giftRepository.findGiftsGroupedByFamily()
-//                .stream()
-//                .map(gift -> convertToDTO(gift, TopGiftDTO.class))
-//                .collect(Collectors.toList());
     }
 
     public List<ParentDTO> getUnsponsoredGiftsByFamily(){
