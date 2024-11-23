@@ -73,4 +73,9 @@ public class ParentController extends BaseController{
         countDTO.setCount(parentService.getCount());
         return countDTO;
     }
+
+    @GetMapping("/parents/unsponsored_children")
+    public List<ParentDTO> getUnsponsoredChildren(){
+        return parentService.findUnsponsoredChildren();
+    }
 }

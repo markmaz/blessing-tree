@@ -29,7 +29,15 @@
     </scm>
     <properties>
         <java.version>17</java.version>
+        <itext.version>9.0.0</itext.version>
     </properties>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>dito</id>-->
+<!--            <name>DITO Repository</name>-->
+<!--            <url>https://repo.itextsupport.com/dito</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -116,7 +124,17 @@
             <artifactId>jsoup</artifactId>
             <version>1.16.1</version> <!-- Check for the latest version -->
         </dependency>
-
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext7-core</artifactId>
+            <version>9.0.0</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>bouncy-castle-adapter</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
