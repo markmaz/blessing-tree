@@ -1,6 +1,6 @@
 package com.blessingtree.controllers;
 
-import com.blessingtree.service.PdfService;
+import com.blessingtree.service.GiftTagService;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,10 +13,10 @@ import java.io.IOException;
 
 @RestController
 public class PdfController extends BaseController {
-    private final PdfService pdfService;
+    private final GiftTagService giftTagService;
 
-    public PdfController(@Autowired PdfService pdfService){
-        this.pdfService = pdfService;
+    public PdfController(@Autowired GiftTagService giftTagService){
+        this.giftTagService = giftTagService;
     }
 
     @GetMapping("/pdf/giftTags")
@@ -28,6 +28,6 @@ public class PdfController extends BaseController {
         PdfWriter writer = new PdfWriter(response.getOutputStream());
         PdfDocument pdf = new PdfDocument(writer);
 
-        pdfService.printGiftTag(pdf, numberOfTags).close();
+        giftTagService.printGiftTag(pdf, numberOfTags).close();
     }
 }

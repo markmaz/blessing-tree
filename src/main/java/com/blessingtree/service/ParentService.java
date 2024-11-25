@@ -3,9 +3,11 @@ package com.blessingtree.service;
 import com.blessingtree.dto.FamilyNoteDTO;
 import com.blessingtree.dto.ParentDTO;
 import com.blessingtree.exceptions.ResourceNotFoundException;
+import com.blessingtree.model.Child;
 import com.blessingtree.model.FamilyNote;
 import com.blessingtree.model.Parent;
 import com.blessingtree.model.User;
+import com.blessingtree.repository.ChildRepository;
 import com.blessingtree.repository.FamilyNoteRepository;
 import com.blessingtree.repository.ParentRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,6 +22,7 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,12 +34,15 @@ public class ParentService extends BaseService{
 
     private final FamilyNoteRepository noteRepository;
 
+    private final ChildRepository childRepository;
     public ParentService(@Autowired  ParentRepository parentRepository,
                          @Autowired ModelMapper mapper,
-                         @Autowired FamilyNoteRepository noteRepository){
+                         @Autowired FamilyNoteRepository noteRepository,
+                         @Autowired ChildRepository childRepository){
         super(mapper);
         this.parentRepository = parentRepository;
         this.noteRepository = noteRepository;
+        this.childRepository = childRepository;
     }
 
     public List<ParentDTO> getParents(){
@@ -140,12 +146,29 @@ public class ParentService extends BaseService{
     }
 
     public List<ParentDTO> findUnsponsoredChildren(){
-        List<Parent> parents = parentRepository.findUnsponsoredChildren();
+        List<Parent> parents = parentRepository.findParentsWithUnsponsoredGifts();
+        System.out.println(parents.size());
+        for (Parent parent : parents) {
+            Iterator<Child> childIterator = parent.getChildren().iterator();
 
-        parents.forEach(parent ->
-                parent.getChildren().forEach(child -> child.getGifts().clear())
-        );
+            while (childIterator.hasNext()) {
+                Child child = childIterator.next();
 
+                boolean hasSponsoredGift = child.getGifts().stream()
+                        .anyMatch(gift -> gift.getSponsor() != null);
+
+                if (hasSponsoredGift) {
+                    System.out.println("removing: " + childIterator.toString());
+                    childIterator.remove();
+                }
+            }
+        }
+
+        parents = parents.stream()
+                .filter(parent -> parent.getChildren() != null && !parent.getChildren().isEmpty())
+                .collect(Collectors.toList());
+
+        System.out.println(parents.size());
         return parents
                 .stream()
                 .map(parent -> convertToDTO(parent, ParentDTO.class))
@@ -156,4 +179,19 @@ public class ParentService extends BaseService{
     public Long getCount(){
         return parentRepository.count();
     }
+
+    public void renameAllTheChildren(){
+        List<Parent> parents = parentRepository.findAll();
+
+        for(Parent p : parents){
+            for(int i=0; i < p.getChildren().size(); i++){
+                Child c = p.getChildren().get(i);
+                Child cd = childRepository.findById(c.getId()).orElse(c);
+                cd.setName("Child " + (i + 1));
+                childRepository.save(cd);
+            }
+        }
+
+    }
+
 }
