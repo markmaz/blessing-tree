@@ -1,5 +1,6 @@
 package com.blessingtree.service;
 
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.Color;
@@ -15,11 +16,13 @@ import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class PdfService {
@@ -67,10 +70,13 @@ public class PdfService {
                     .stroke(); // Draw the border
 
             ClassPathResource fontResource = new ClassPathResource("static/Freedom_Fonts.ttf");
-            File fontResourceFile = fontResource.getFile();
+            InputStream fontStream = fontResource.getInputStream();
+            PdfFont boldFont = PdfFontFactory.createFont(IOUtils.toByteArray(fontStream), PdfEncodings.WINANSI);
+//            ClassPathResource fontResource = new ClassPathResource("static/Freedom_Fonts.ttf");
+//            File fontResourceFile = fontResource.getFile();
             Color custom = new DeviceRgb(235, 84, 82);
             // Optionally add text inside the box
-            PdfFont boldFont = PdfFontFactory.createFont(fontResourceFile.getAbsolutePath(), "WinAnsi");
+            //PdfFont boldFont = PdfFontFactory.createFont(fontResourceFile.getAbsolutePath(), "WinAnsi");
             Canvas canvas = new Canvas(pdfCanvas, rectangle, true);
             canvas.add(new com.itextpdf.layout.element.Paragraph("2024 Blessing Tree")
                     .setMargin(5).setPadding(5).setFontSize(24).setFontColor(custom).setFont(boldFont));
@@ -106,8 +112,9 @@ public class PdfService {
             pdfCanvas.setLineWidth(.5f).stroke();
 
             ClassPathResource imgResource = new ClassPathResource("static/xmas_tree.png");
-            File imgFile = imgResource.getFile();
-            ImageData imageData = ImageDataFactory.create(imgFile.getAbsolutePath());
+            //File imgFile = imgResource.getFile();
+            InputStream imageStream = imgResource.getInputStream();
+            ImageData imageData = ImageDataFactory.create(imageStream.readAllBytes());
             Image image = new Image(imageData);
 
             // Set image position and size
