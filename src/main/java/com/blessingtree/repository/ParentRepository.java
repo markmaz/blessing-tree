@@ -43,5 +43,6 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
         FROM Parent p JOIN p.children c 
         WHERE c.id NOT IN (SELECT g.child.id FROM Gift g WHERE g.sponsor IS NOT NULL)
     """)
+    @EntityGraph(value = "children")
     List<Parent> findUnsponsoredChildren();
 }

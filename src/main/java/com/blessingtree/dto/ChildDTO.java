@@ -12,13 +12,16 @@ public class ChildDTO {
 
     private List<GiftDTO> gifts;
 
+    private String name;
+
     public ChildDTO(){}
 
-    public ChildDTO(Long id, List<GiftDTO> gifts, String age, String gender){
+    public ChildDTO(Long id, List<GiftDTO> gifts, String age, String gender, String name){
         this.id = id;
         this.gifts = gifts;
         this.age = age;
         this.gender = gender;
+        this.name = name;
     }
 
     public Long getId() {
@@ -53,25 +56,34 @@ public class ChildDTO {
         this.gender = gender;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ChildDTO childDTO)) return false;
-        return Objects.equals(id, childDTO.id) && Objects.equals(age, childDTO.age) && Objects.equals(gender, childDTO.gender) && Objects.equals(gifts, childDTO.gifts);
+        return Objects.equals(id, childDTO.id) && Objects.equals(age, childDTO.age) && Objects.equals(gender, childDTO.gender) && Objects.equals(gifts, childDTO.gifts) && Objects.equals(name, childDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, age, gender, gifts);
+        return Objects.hash(id, age, gender, gifts, name);
     }
 
     @Override
     public String toString() {
         return "ChildDTO{" +
                 "id=" + id +
-                ", age=" + age +
+                ", age='" + age + '\'' +
                 ", gender='" + gender + '\'' +
                 ", gifts=" + gifts +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

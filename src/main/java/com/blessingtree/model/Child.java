@@ -25,6 +25,9 @@ public class Child extends AuditRecord{
     @Column(name="gender")
     private String gender;
 
+    @Column(name="name")
+    private String name;
+
     public Long getId() {
         return id;
     }
@@ -65,16 +68,24 @@ public class Child extends AuditRecord{
         this.gender = gender;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Child child)) return false;
-        return Objects.equals(id, child.id) && Objects.equals(parent, child.parent) && Objects.equals(gifts, child.gifts) && Objects.equals(age, child.age) && Objects.equals(gender, child.gender);
+        return Objects.equals(id, child.id) && Objects.equals(parent, child.parent) && Objects.equals(gifts, child.gifts) && Objects.equals(age, child.age) && Objects.equals(gender, child.gender) && Objects.equals(name, child.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, parent, gifts, age, gender);
+        return Objects.hash(id, parent, gifts, age, gender, name);
     }
 
     @Override
@@ -83,8 +94,9 @@ public class Child extends AuditRecord{
                 "id=" + id +
                 ", parent=" + parent +
                 ", gifts=" + gifts +
-                ", age=" + age +
+                ", age='" + age + '\'' +
                 ", gender='" + gender + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

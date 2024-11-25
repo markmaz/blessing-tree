@@ -78,4 +78,9 @@ public class ParentController extends BaseController{
     public List<ParentDTO> getUnsponsoredChildren(){
         return parentService.findUnsponsoredChildren();
     }
+
+    @GetMapping("/parents/rename")
+    public void renameTheChildren(){
+        parentService.renameAllTheChildren();
+    }
 }

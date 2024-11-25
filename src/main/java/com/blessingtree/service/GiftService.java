@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -133,7 +134,30 @@ public class GiftService extends BaseService{
     }
 
     public List<ParentDTO> getUnsponsoredGiftsByFamily(){
-        return parentRepository.findParentsWithUnsponsoredGifts()
+        List<Parent> parents = parentRepository.findParentsWithUnsponsoredGifts();
+        System.out.println(parents.size());
+        for (Parent parent : parents) {
+            Iterator<Child> childIterator = parent.getChildren().iterator();
+
+            while (childIterator.hasNext()) {
+                Child child = childIterator.next();
+
+                boolean hasSponsoredGift = child.getGifts().stream()
+                        .anyMatch(gift -> gift.getSponsor() != null);
+
+                if (hasSponsoredGift) {
+                    System.out.println("removing: " + childIterator.toString());
+                    childIterator.remove();
+                }
+            }
+        }
+
+        parents = parents.stream()
+                .filter(parent -> parent.getChildren() != null && !parent.getChildren().isEmpty())
+                .collect(Collectors.toList());
+
+        System.out.println(parents.size());
+        return parents
                 .stream()
                 .map(parent -> convertToDTO(parent, ParentDTO.class))
                 .collect(Collectors.toList());

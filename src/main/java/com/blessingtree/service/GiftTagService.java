@@ -20,27 +20,26 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 @Service
-public class PdfService {
+public class GiftTagService {
+    private final float boxWidth = 7.5f * 72f; // 4 inches
+    private final float boxHeight = 3 * 72f; // 3 inches
+    private final float horizontalMargin = 36f; // Left margin
+    private final float verticalSpacing = 10f; // Spacing between boxes
+
+    private final float topMargin = 36f; // 0.5 inches
+    private final float bottomMargin = 36f; // 0.5 inches
+
     public PdfDocument printGiftTag(PdfDocument pdf, int numberOfTags) throws IOException {
         PdfPage page = pdf.addNewPage();
 
         // Get the page dimensions
         float pageWidth = page.getPageSize().getWidth();
         float pageHeight = page.getPageSize().getHeight();
-        float topMargin = 36f; // 0.5 inches
-        float bottomMargin = 36f; // 0.5 inches
         float availableHeight = pageHeight - topMargin - bottomMargin;
-
-        // Box dimensions
-        float boxWidth = 7.5f * 72f; // 4 inches
-        float boxHeight = 3 * 72f; // 3 inches
-        float horizontalMargin = 36f; // Left margin
-        float verticalSpacing = 10f; // Spacing between boxes
 
         // Track current position
         float currentY = pageHeight - topMargin;
@@ -66,17 +65,14 @@ public class PdfService {
             PdfCanvas pdfCanvas = new PdfCanvas(page);
             pdfCanvas.setStrokeColor(ColorConstants.BLACK) // Set border color
                     .setLineWidth(1) // Set border thickness
-                    .rectangle(rectangle) // Define the rectangle
+                    .roundRectangle(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), 15) // Define the rectangle
                     .stroke(); // Draw the border
 
             ClassPathResource fontResource = new ClassPathResource("static/Freedom_Fonts.ttf");
             InputStream fontStream = fontResource.getInputStream();
             PdfFont boldFont = PdfFontFactory.createFont(IOUtils.toByteArray(fontStream), PdfEncodings.WINANSI);
-//            ClassPathResource fontResource = new ClassPathResource("static/Freedom_Fonts.ttf");
-//            File fontResourceFile = fontResource.getFile();
             Color custom = new DeviceRgb(235, 84, 82);
-            // Optionally add text inside the box
-            //PdfFont boldFont = PdfFontFactory.createFont(fontResourceFile.getAbsolutePath(), "WinAnsi");
+
             Canvas canvas = new Canvas(pdfCanvas, rectangle, true);
             canvas.add(new com.itextpdf.layout.element.Paragraph("2024 Blessing Tree")
                     .setMargin(5).setPadding(5).setFontSize(24).setFontColor(custom).setFont(boldFont));
