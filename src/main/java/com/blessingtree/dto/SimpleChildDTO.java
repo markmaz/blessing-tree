@@ -5,6 +5,7 @@ public class SimpleChildDTO {
     private String gender;
     private String age;
     private SimpleParentDTO parent;
+    private String name;
 
     public String getGender() {
         return gender;
@@ -36,5 +37,13 @@ public class SimpleChildDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
