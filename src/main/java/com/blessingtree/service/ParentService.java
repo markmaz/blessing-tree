@@ -46,7 +46,7 @@ public class ParentService extends BaseService{
     }
 
     public List<ParentDTO> getParents(){
-        return parentRepository.findAll(Sort.by("lastName"))
+        return parentRepository.findAll(Sort.by("btid"))
                 .stream()
                 .map(parent -> convertToDTO(parent, ParentDTO.class))
                 .collect(Collectors.toList());
