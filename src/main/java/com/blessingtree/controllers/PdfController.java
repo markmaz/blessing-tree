@@ -1,16 +1,16 @@
 package com.blessingtree.controllers;
 
+import com.blessingtree.dto.ParentDTO;
+import com.blessingtree.dto.RosterDTO;
 import com.blessingtree.service.GiftTagService;
 import com.blessingtree.service.ParentService;
+import com.blessingtree.service.ReportService;
 import com.blessingtree.service.SponsorService;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,12 +21,16 @@ public class PdfController extends BaseController {
     private final SponsorService sponsorService;
     private final ParentService parentService;
 
+    private final ReportService reportService;
+
     public PdfController(@Autowired GiftTagService giftTagService,
                          @Autowired SponsorService sponsorService,
-                         @Autowired ParentService parentService){
+                         @Autowired ParentService parentService,
+                         @Autowired ReportService reportService){
         this.giftTagService = giftTagService;
         this.sponsorService = sponsorService;
         this.parentService = parentService;
+        this.reportService = reportService;
     }
 
     @GetMapping("/pdf/giftTags")
@@ -53,13 +57,18 @@ public class PdfController extends BaseController {
         giftTagService.printGiftTagFromParent(pdf, parentService.getParents()).close();
     }
 
+    @PostMapping("/pdf/reports/roster")
+    public void generateRosterReport(HttpServletResponse response, @RequestBody RosterDTO roster) throws IOException {
+        PdfDocument pdf = getPdfDocument(response);
+        reportService.printRoster(pdf, roster).close();
+    }
+
     private static PdfDocument getPdfDocument(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=example.pdf");
 
         // Create a PDF document in memory
         PdfWriter writer = new PdfWriter(response.getOutputStream());
-        PdfDocument pdf = new PdfDocument(writer);
-        return pdf;
+        return new PdfDocument(writer);
     }
 }
