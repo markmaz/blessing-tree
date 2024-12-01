@@ -4,6 +4,7 @@ import com.blessingtree.model.Sponsor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
 
     @Override
     long count();
+
+    @Query("SELECT s FROM Sponsor s LEFT JOIN s.gifts g GROUP BY s ORDER BY COUNT(g) asc")
+    List<Sponsor> findTop10SponsorsWithMostGifts();
 
     Sponsor findByEmailAndFirstNameAndLastName(String email, String firstName, String lastName);
 }

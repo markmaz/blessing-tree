@@ -55,9 +55,14 @@ public class SponsorController extends BaseController{
         return sponsorService.addLogEntry(id, logEntry);
     }
 
-    @DeleteMapping("/sponsor/{id}/logEntries/{entryID}")
+    @DeleteMapping("/sponsors/{id}/logEntries/{entryID}")
     public void removeLogEntry(@PathVariable Long id, @PathVariable Long entryID){
         sponsorService.removeLogEntry(id, entryID);
+    }
+
+    @GetMapping("/sponsors/top")
+    public List<SponsorDTO> getTopSponsors(){
+        return sponsorService.getTopSponsors();
     }
 }
 

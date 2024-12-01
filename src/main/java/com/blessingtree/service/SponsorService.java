@@ -164,4 +164,12 @@ public class SponsorService extends BaseService{
     public void removeLogEntry(Long id, Long entryID) {
         callLogRepository.deleteById(entryID);
     }
+
+    public List<SponsorDTO> getTopSponsors(){
+        return sponsorRepository.findTop10SponsorsWithMostGifts()
+                .stream()
+                .map(sponsor -> convertToDTO(sponsor, SponsorDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }
