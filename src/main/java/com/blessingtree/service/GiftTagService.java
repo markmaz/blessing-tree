@@ -171,7 +171,8 @@ public class GiftTagService {
         Color lightGray = new DeviceRgb(237, 237, 237);
         canvas.showTextAligned(new Paragraph(tagInfo.getId()).setFontSize(14).setFont(boldFont), rectangle.getX() + (190 + 45 + 9), rectangle.getY() + 152, TextAlignment.LEFT);
         canvas.showTextAligned(new Paragraph(tagInfo.getChildInfo()).setFontSize(14).setFont(boldFont), rectangle.getX() + (190 + 25), rectangle.getY() + 130, TextAlignment.LEFT);
-        canvas.showTextAligned(new Paragraph(tagInfo.getDescription()).setFontSize(14).setFont(boldFont).setFontColor(lightGray), rectangle.getX() + (190 + 25), rectangle.getY() + 110, TextAlignment.LEFT);
+        canvas.showTextAligned(new Paragraph("").setFontSize(14).setFont(boldFont).setFontColor(lightGray), rectangle.getX() + (190 + 25), rectangle.getY() + 110, TextAlignment.LEFT);
+//        canvas.showTextAligned(new Paragraph(tagInfo.getDescription()).setFontSize(14).setFont(boldFont).setFontColor(lightGray), rectangle.getX() + (190 + 25), rectangle.getY() + 110, TextAlignment.LEFT);
 //        canvas.showTextAligned(new Paragraph("Test").setFontSize(14).setFont(boldFont), rectangle.getX() + (190 + 45 + 9), rectangle.getY() + 152, TextAlignment.LEFT);
 //        canvas.showTextAligned(new Paragraph("test").setFontSize(14).setFont(boldFont), rectangle.getX() + (190 + 45), rectangle.getY() + 130, TextAlignment.LEFT);
 //        canvas.showTextAligned(new Paragraph("test").setFontSize(14).setFont(boldFont).setFontColor(lightGray), rectangle.getX() + (190 + 15), rectangle.getY() + 110, TextAlignment.LEFT);
