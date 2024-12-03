@@ -62,6 +62,9 @@ public class Sponsor extends AuditRecord {
     @OneToMany(mappedBy = "sponsor", fetch = FetchType.LAZY)
     private List<CallLog> logEntries;
 
+    @Column(name="giftStatus")
+    private String giftStatus;
+
     public Long getId() {
         return id;
     }
@@ -174,6 +177,14 @@ public class Sponsor extends AuditRecord {
         this.numberOfChildrenSponsored = numberOfChildrenSponsored;
     }
 
+    public String getGiftStatus() {
+        return giftStatus;
+    }
+
+    public void setGiftStatus(String giftStatus) {
+        this.giftStatus = giftStatus;
+    }
+
     public List<CallLog> getLogEntries() {
         return logEntries;
     }
@@ -186,12 +197,12 @@ public class Sponsor extends AuditRecord {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Sponsor sponsor)) return false;
-        return Objects.equals(id, sponsor.id) && Objects.equals(address, sponsor.address) && Objects.equals(gifts, sponsor.gifts) && Objects.equals(lastName, sponsor.lastName) && Objects.equals(firstName, sponsor.firstName) && Objects.equals(phone, sponsor.phone) && Objects.equals(email, sponsor.email) && Objects.equals(bestTimeToCall, sponsor.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, sponsor.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, sponsor.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, sponsor.wantToVolunteer) && Objects.equals(childAgePreference, sponsor.childAgePreference) && Objects.equals(genderPreference, sponsor.genderPreference) && Objects.equals(numberOfChildrenSponsored, sponsor.numberOfChildrenSponsored) && Objects.equals(logEntries, sponsor.logEntries);
+        return Objects.equals(id, sponsor.id) && Objects.equals(address, sponsor.address) && Objects.equals(gifts, sponsor.gifts) && Objects.equals(lastName, sponsor.lastName) && Objects.equals(firstName, sponsor.firstName) && Objects.equals(phone, sponsor.phone) && Objects.equals(email, sponsor.email) && Objects.equals(bestTimeToCall, sponsor.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, sponsor.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, sponsor.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, sponsor.wantToVolunteer) && Objects.equals(childAgePreference, sponsor.childAgePreference) && Objects.equals(genderPreference, sponsor.genderPreference) && Objects.equals(numberOfChildrenSponsored, sponsor.numberOfChildrenSponsored) && Objects.equals(logEntries, sponsor.logEntries) && Objects.equals(giftStatus, sponsor.giftStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, gifts, lastName, firstName, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored, logEntries);
+        return Objects.hash(id, address, gifts, lastName, firstName, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored, logEntries, giftStatus);
     }
 
     @Override
@@ -212,6 +223,7 @@ public class Sponsor extends AuditRecord {
                 ", genderPreference='" + genderPreference + '\'' +
                 ", numberOfChildrenSponsored=" + numberOfChildrenSponsored +
                 ", logEntries=" + logEntries +
+                ", giftStatus='" + giftStatus + '\'' +
                 '}';
     }
 }

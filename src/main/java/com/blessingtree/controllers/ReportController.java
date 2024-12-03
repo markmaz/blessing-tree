@@ -1,6 +1,5 @@
 package com.blessingtree.controllers;
 
-import com.blessingtree.dto.ParentDTO;
 import com.blessingtree.dto.RosterDTO;
 import com.blessingtree.service.GiftTagService;
 import com.blessingtree.service.ParentService;
@@ -10,23 +9,29 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
-public class PdfController extends BaseController {
+public class ReportController extends BaseController {
     private final GiftTagService giftTagService;
     private final SponsorService sponsorService;
     private final ParentService parentService;
 
     private final ReportService reportService;
 
-    public PdfController(@Autowired GiftTagService giftTagService,
-                         @Autowired SponsorService sponsorService,
-                         @Autowired ParentService parentService,
-                         @Autowired ReportService reportService){
+    public ReportController(@Autowired GiftTagService giftTagService,
+                            @Autowired SponsorService sponsorService,
+                            @Autowired ParentService parentService,
+                            @Autowired ReportService reportService){
         this.giftTagService = giftTagService;
         this.sponsorService = sponsorService;
         this.parentService = parentService;
@@ -61,6 +66,21 @@ public class PdfController extends BaseController {
     public void generateRosterReport(HttpServletResponse response, @RequestBody RosterDTO roster) throws IOException {
         PdfDocument pdf = getPdfDocument(response);
         reportService.printRoster(pdf, roster).close();
+    }
+
+    @PostMapping("/excel/reports/roster")
+    public ResponseEntity<byte[]> generateExcelRosterReport(@RequestBody RosterDTO roster){
+        try{
+            ByteArrayOutputStream outputStream = reportService.printExcelRoster(roster);
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sample.xlsx")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(outputStream.toByteArray());
+        }catch (IOException e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     private static PdfDocument getPdfDocument(HttpServletResponse response) throws IOException {

@@ -23,6 +23,7 @@ public class SponsorDTO {
     private String genderPreference;
     private Integer numberOfChildrenSponsored;
     private List<CallLogDTO> logEntries;
+    private String giftStatus;
 
     public Long getId() {
         return id;
@@ -152,6 +153,14 @@ public class SponsorDTO {
         this.logEntries = logEntries;
     }
 
+    public String getGiftStatus() {
+        return giftStatus;
+    }
+
+    public void setGiftStatus(String giftStatus) {
+        this.giftStatus = giftStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -161,7 +170,7 @@ public class SponsorDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored, logEntries);
+        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored, logEntries, giftStatus);
     }
 
     @Override
@@ -183,6 +192,7 @@ public class SponsorDTO {
                 ", genderPreference='" + genderPreference + '\'' +
                 ", numberOfChildrenSponsored=" + numberOfChildrenSponsored +
                 ", logEntries=" + logEntries +
+                ", giftStatus='" + giftStatus + '\'' +
                 '}';
     }
 }
