@@ -25,9 +25,13 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -114,6 +118,18 @@ public class ReportService {
 
         document.add(table);
         return pdf;
+    }
+
+    public ByteArrayOutputStream printExcelRoster(RosterDTO roster) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Blessing Tree");
+
+        Row headerRow = sheet.createRow(0);
+        String[] headers = {"ID", "Last Name", "First Name", "Phone", "Phone", "MHID", "Children", "BT Gifts(Optional)", "Sponsor", "Phone", "Gift Rcvd", "Picked Up"};
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        workbook.write(out);
+        return out;
     }
 
     protected class customEventHandler extends AbstractPdfDocumentEventHandler{
