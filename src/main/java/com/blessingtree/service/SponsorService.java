@@ -172,4 +172,10 @@ public class SponsorService extends BaseService{
                 .collect(Collectors.toList());
     }
 
+    public SponsorDTO updateGiftStatus(Long sponsorID, String status){
+        Sponsor sponsor = sponsorRepository.findById(sponsorID).orElseThrow(() -> new RuntimeException("Missing Sponsor"));
+        sponsor.setGiftStatus(status);
+        return modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
+    }
+
 }

@@ -31,4 +31,6 @@ public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
     List<Sponsor> findTop10SponsorsWithMostGifts();
 
     Sponsor findByEmailAndFirstNameAndLastName(String email, String firstName, String lastName);
+
+
 }
