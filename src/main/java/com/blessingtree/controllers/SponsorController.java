@@ -64,5 +64,10 @@ public class SponsorController extends BaseController{
     public List<SponsorDTO> getTopSponsors(){
         return sponsorService.getTopSponsors();
     }
+
+    @PostMapping("/sponsors/{id}/giftStatus/{status}")
+    public SponsorDTO updateSponsorGiftStatus(@PathVariable String status, @PathVariable Long id){
+        return sponsorService.updateGiftStatus(id, status);
+    }
 }
 
