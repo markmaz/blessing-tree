@@ -25,14 +25,15 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -123,13 +124,100 @@ public class ReportService {
     public ByteArrayOutputStream printExcelRoster(RosterDTO roster) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Blessing Tree");
-
+        byte[] rgbH = {(byte)255, (byte)217, (byte)102};
+        byte[] rgb = {(byte) 255, (byte) 235, (byte) 156};
+        XSSFColor color = new XSSFColor(rgbH);
         Row headerRow = sheet.createRow(0);
         String[] headers = {"ID", "Last Name", "First Name", "Phone", "Phone", "MHID", "Children", "BT Gifts(Optional)", "Sponsor", "Phone", "Gift Rcvd", "Picked Up"};
 
+        for (int i = 0; i < headers.length; i++) {
+            org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            CellStyle style = workbook.createCellStyle();
+            Font font = workbook.createFont();
+            font.setBold(true);
+            style.setFont(font);
+            style.setFillForegroundColor(color);
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            cell.setCellStyle(style);
+        }
+
+        int row = 1;
+        for(ParentDTO parent : roster.getParents()){
+            Row pRow = sheet.createRow(row);
+            pRow.createCell(0).setCellValue(parent.getBtid());
+            pRow.createCell(1).setCellValue(parent.getLastName());
+            pRow.createCell(2).setCellValue(parent.getFirstName());
+            pRow.createCell(3).setCellValue(parent.getPrimaryPhone());
+            pRow.createCell(4).setCellValue(parent.getSecondaryPhone());
+            pRow.createCell(5).setCellValue(parent.getMhid() + "");
+            pRow.createCell(6).setCellValue(parent.getChildren().size());
+            pRow.createCell(7);
+            pRow.createCell(8);
+            pRow.createCell(9);
+            pRow.createCell(10);
+            pRow.createCell(11);
+            row++;
+
+            for(ChildDTO child: parent.getChildren()){
+                for(GiftDTO gift: child.getGifts()){
+                    Row cRow = sheet.createRow(row);
+                    cRow.createCell(0);
+                    cRow.createCell(1);
+                    cRow.createCell(2);
+                    cRow.createCell(3);
+                    cRow.createCell(4);
+                    cRow.createCell(5);
+                    cRow.createCell(6).setCellValue(child.getName() + "-" + child.getGender().substring(0, 1).toUpperCase() + (child.getAge() == null ? "" : child.getAge()));
+                    cRow.createCell(7).setCellValue(gift.getDescription());
+
+                    if(gift.getSponsor() != null){
+                        cRow.createCell(8).setCellValue(gift.getSponsor().getFirstName() + " " + gift.getSponsor().getLastName());
+                        cRow.createCell(9).setCellValue(gift.getSponsor().getPhone());
+                        cRow.createCell(10).setCellValue(gift.getSponsor().getGiftStatus());
+                    }else{
+                        cRow.createCell(8);
+                        cRow.createCell(9);
+                        cRow.createCell(10);
+                    }
+
+                    cRow.createCell(11);
+                    row ++;
+                }
+            }
+            Row sRow = sheet.createRow(row);
+            CellStyle spaceStyle = workbook.createCellStyle();
+            XSSFColor cellColor = new XSSFColor(rgb);
+            spaceStyle.setFillForegroundColor(cellColor);
+            spaceStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            for(int i = 0; i < headers.length; i++){
+                sRow.createCell(i).setCellStyle(spaceStyle);
+            }
+
+            row++;
+        }
+
+        autoSizeColumns(workbook);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         workbook.write(out);
         return out;
+    }
+
+    public void autoSizeColumns(Workbook workbook) {
+        int numberOfSheets = workbook.getNumberOfSheets();
+        for (int i = 0; i < numberOfSheets; i++) {
+            Sheet sheet = workbook.getSheetAt(i);
+            if (sheet.getPhysicalNumberOfRows() > 0) {
+                Row row = sheet.getRow(sheet.getFirstRowNum());
+                Iterator<org.apache.poi.ss.usermodel.Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    org.apache.poi.ss.usermodel.Cell cell = cellIterator.next();
+                    int columnIndex = cell.getColumnIndex();
+                    sheet.autoSizeColumn(columnIndex);
+                }
+            }
+        }
     }
 
     protected class customEventHandler extends AbstractPdfDocumentEventHandler{
