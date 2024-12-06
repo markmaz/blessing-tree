@@ -1,9 +1,6 @@
 package com.blessingtree.service;
 
-import com.blessingtree.dto.ChildDTO;
-import com.blessingtree.dto.GiftDTO;
-import com.blessingtree.dto.ParentDTO;
-import com.blessingtree.dto.RosterDTO;
+import com.blessingtree.dto.*;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceRgb;
@@ -38,20 +35,21 @@ import java.util.List;
 
 @Service
 public class ReportService {
+    Color headerColor = new DeviceRgb(240, 242, 242);
+    Color parentRow = new DeviceRgb(208, 233, 238);
+    Color separator = new DeviceRgb(42, 54, 59);
+    Color alt = new DeviceRgb(235, 238, 242);
+
     public PdfDocument printRoster(PdfDocument pdf, RosterDTO roster) throws IOException {
         PageSize landscape = PageSize.A4.rotate();
         pdf.setDefaultPageSize(landscape);
-
         Document document = new Document(pdf);
-        Color headerColor = new DeviceRgb(240, 242, 242);
-        Color parentRow = new DeviceRgb(208, 233, 238);
-        Color separator = new DeviceRgb(42, 54, 59);
-        Color alt = new DeviceRgb(235, 238, 242);
+
 
         document.add(new Paragraph("Blessing Tree 2024 - " + roster.getUnits().toString()).setFontSize(18));
 
         float[] columnWidths = {50, 100, 80, 80, 50, 100, 150, 100, 80, 50, 50}; // Adjust widths as needed
-        Table table = new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
+        Table table = createTable(columnWidths);
         table.setBorder(new SolidBorder(headerColor, .5f));
 
         PdfFont regularFont = PdfFontFactory.createFont("Helvetica");
@@ -63,13 +61,7 @@ public class ReportService {
                 "ID", "Name", "Phone", "Phone", "MHID",
                 "Children", "Gifts", "Sponsor", "Phone", "Gft Rcvd", "Picked Up"
         };
-        for (String header : headers) {
-            Cell headerCell = new Cell().add(new Paragraph(header).setFont(boldFont).setFontSize(10));
-            headerCell.setBackgroundColor(headerColor);
-            headerCell.setTextAlignment(TextAlignment.LEFT);
-            headerCell.setBorder(new SolidBorder(headerColor, .5f));
-            table.addHeaderCell(headerCell);
-        }
+        createHeaders(table, boldFont, headers);
 
         for(ParentDTO p : roster.getParents()){
             table.addCell(new Cell().add(new Paragraph(p.getBtid()).setFontSize(10).setFont(regularFont)).setBackgroundColor(parentRow).setBorder(new SolidBorder(headerColor, .5f)));
@@ -82,7 +74,7 @@ public class ReportService {
 
             int x = 0;
             for(ChildDTO c : p.getChildren()){
-                Color cellColor = null;
+                Color cellColor;
 
                 if(x % 3 > 0){
                     cellColor = alt;
@@ -119,6 +111,16 @@ public class ReportService {
 
         document.add(table);
         return pdf;
+    }
+
+    private void createHeaders(Table table, PdfFont boldFont, String[] headers) {
+        for (String header : headers) {
+            Cell headerCell = new Cell().add(new Paragraph(header).setFont(boldFont).setFontSize(10));
+            headerCell.setBackgroundColor(headerColor);
+            headerCell.setTextAlignment(TextAlignment.LEFT);
+            headerCell.setBorder(new SolidBorder(headerColor, .5f));
+            table.addHeaderCell(headerCell);
+        }
     }
 
     public ByteArrayOutputStream printExcelRoster(RosterDTO roster) throws IOException {
@@ -220,7 +222,61 @@ public class ReportService {
         }
     }
 
-    protected class customEventHandler extends AbstractPdfDocumentEventHandler{
+    public PdfDocument printSponsorReport(PdfDocument pdf, List<SponsorDTO> sponsors) throws IOException {
+        PageSize landscape = PageSize.A4.rotate();
+        pdf.setDefaultPageSize(landscape);
+
+        Document document = new Document(pdf);
+        document.add(new Paragraph("Blessing Tree 2024 - Sponsor Report"));
+
+        float[] columnWidths = {160, 80, 175, 120, 80, 80, 75}; // Adjust widths as needed
+        Table table = createTable(columnWidths);
+        table.setBorder(new SolidBorder(headerColor, .5f));
+
+        PdfFont regularFont = PdfFontFactory.createFont("Helvetica");
+        PdfFont boldFont = PdfFontFactory.createFont("Helvetica-Bold");
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new customEventHandler());
+
+        // Add table headers
+        String[] headers = {
+                "Name", "Phone", "E-mail", "Best time to call",
+                "#Pledged", "#Sponsored", "Gift Status"
+        };
+
+        createHeaders(table, boldFont, headers);
+
+        int row = 0;
+        Color cellColor;
+
+        for(SponsorDTO sponsor : sponsors){
+            if(row % 2 == 0){
+                cellColor = alt;
+            }else{
+                cellColor = ColorConstants.WHITE;
+            }
+
+            if(sponsor.getGifts().size() > 0){
+                table.addCell(new Cell().add(new Paragraph(sponsor.getFirstName() + " " + sponsor.getLastName()).setFontSize(10).setFont(regularFont)).setBackgroundColor(cellColor).setBorder(new SolidBorder(headerColor, .5f)));
+                table.addCell(new Cell().add(new Paragraph(sponsor.getPhone()).setFontSize(10).setFont(regularFont)).setBackgroundColor(cellColor).setBorder(new SolidBorder(headerColor, .5f)));
+                table.addCell(new Cell().add(new Paragraph(sponsor.getEmail() == null ? "" : sponsor.getEmail()).setFontSize(10).setFont(regularFont)).setBackgroundColor(cellColor).setBorder(new SolidBorder(headerColor, .5f)));
+                table.addCell(new Cell().add(new Paragraph(sponsor.getBestTimeToCall() == null ? "" : sponsor.getBestTimeToCall()).setFontSize(10).setFont(regularFont)).setBackgroundColor(cellColor).setBorder(new SolidBorder(headerColor, .5f)));
+                table.addCell(new Cell().add(new Paragraph(sponsor.getNumberOfChildrenSponsored() + "").setFontSize(10).setFont(regularFont)).setBackgroundColor(cellColor).setBorder(new SolidBorder(headerColor, .5f)));
+                table.addCell(new Cell().add(new Paragraph(sponsor.getGifts().size() + "").setFontSize(10).setFont(regularFont)).setBackgroundColor(cellColor).setBorder(new SolidBorder(headerColor, .5f)));
+                table.addCell(new Cell().add(new Paragraph(sponsor.getGiftStatus() + "").setFontSize(10).setFont(regularFont)).setBackgroundColor(cellColor).setBorder(new SolidBorder(headerColor, .5f)));
+                row++;
+            }
+
+        }
+
+        document.add(table);
+        return pdf;
+    }
+
+    private Table createTable(float[] columnWidths){
+        return new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
+    }
+
+    protected static class customEventHandler extends AbstractPdfDocumentEventHandler{
         @Override
         protected void onAcceptedEvent(AbstractPdfDocumentEvent abstractPdfDocumentEvent) {
             PdfDocumentEvent docEvent = (PdfDocumentEvent) abstractPdfDocumentEvent;

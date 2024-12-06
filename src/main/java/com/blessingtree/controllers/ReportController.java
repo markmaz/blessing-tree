@@ -1,6 +1,7 @@
 package com.blessingtree.controllers;
 
 import com.blessingtree.dto.RosterDTO;
+import com.blessingtree.dto.SponsorDTO;
 import com.blessingtree.service.GiftTagService;
 import com.blessingtree.service.ParentService;
 import com.blessingtree.service.ReportService;
@@ -15,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -66,6 +65,12 @@ public class ReportController extends BaseController {
     public void generateRosterReport(HttpServletResponse response, @RequestBody RosterDTO roster) throws IOException {
         PdfDocument pdf = getPdfDocument(response);
         reportService.printRoster(pdf, roster).close();
+    }
+
+    @PostMapping("/pdf/reports/sponsor")
+    public void generateSponsorReport(HttpServletResponse response, @RequestBody List<SponsorDTO> sponsors) throws Exception {
+        PdfDocument pdf = getPdfDocument(response);
+        reportService.printSponsorReport(pdf, sponsors).close();
     }
 
     @PostMapping("/excel/reports/roster")
