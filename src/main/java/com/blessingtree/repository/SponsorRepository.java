@@ -33,4 +33,6 @@ public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
     Sponsor findByEmailAndFirstNameAndLastName(String email, String firstName, String lastName);
 
 
+    @Query("SELECT count(distinct s.id) FROM Sponsor s JOIN s.gifts g WHERE s.giftStatus in ('Pending', 'Partial')")
+    Long getStatusCounts();
 }

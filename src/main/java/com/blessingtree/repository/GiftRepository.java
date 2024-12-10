@@ -35,4 +35,7 @@ public interface GiftRepository extends JpaRepository<Gift, Long> {
     @Query("SELECT g from Gift g join g.child c join g.child.parent p GROUP BY g.child.parent.id order by g.child.parent.firstName")
     List<Gift> findGiftsGroupedByFamily();
 
+    @Query("select count(g) from Gift g left join g.sponsor s where s.giftStatus in ('Pending', 'Partial')")
+    Long getOutstandingGiftCount();
+
 }

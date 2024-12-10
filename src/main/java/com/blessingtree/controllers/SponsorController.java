@@ -45,9 +45,7 @@ public class SponsorController extends BaseController{
 
     @GetMapping("/sponsors/count")
     public CountDTO getCount(){
-        CountDTO countDTO = new CountDTO();
-        countDTO.setCount(sponsorService.getCount());
-        return countDTO;
+        return new CountDTO(sponsorService.getCount());
     }
 
     @PostMapping("/sponsors/{id}/logEntries")
@@ -68,6 +66,11 @@ public class SponsorController extends BaseController{
     @PostMapping("/sponsors/{id}/giftStatus/{status}")
     public SponsorDTO updateSponsorGiftStatus(@PathVariable String status, @PathVariable Long id){
         return sponsorService.updateGiftStatus(id, status);
+    }
+
+    @GetMapping("/sponsors/giftStatus/count")
+    public CountDTO getGiftStatusCount(){
+        return new CountDTO(sponsorService.getStatusCounts());
     }
 }
 
