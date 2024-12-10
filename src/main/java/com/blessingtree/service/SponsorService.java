@@ -1,6 +1,7 @@
 package com.blessingtree.service;
 
 import com.blessingtree.dto.CallLogDTO;
+import com.blessingtree.dto.CountDTO;
 import com.blessingtree.dto.SponsorDTO;
 import com.blessingtree.model.Address;
 import com.blessingtree.model.CallLog;
@@ -178,4 +179,7 @@ public class SponsorService extends BaseService{
         return modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 
+    public Long getStatusCounts(){
+        return this.sponsorRepository.getStatusCounts();
+    }
 }

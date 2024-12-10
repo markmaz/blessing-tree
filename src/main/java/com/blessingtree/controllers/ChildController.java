@@ -50,8 +50,6 @@ public class ChildController extends BaseController{
 
     @GetMapping("/children/count")
     public CountDTO getCount(){
-        CountDTO countDTO = new CountDTO();
-        countDTO.setCount(childService.getCount());
-        return countDTO;
+        return new CountDTO(childService.getCount());
     }
 }

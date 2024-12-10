@@ -45,9 +45,7 @@ public class GiftController extends BaseController{
 
     @GetMapping("/gifts/count")
     public CountDTO getCount(){
-        CountDTO countDTO = new CountDTO();
-        countDTO.setCount(giftService.getCount());
-        return countDTO;
+        return new CountDTO(giftService.getCount());
     }
 
     @GetMapping("/gifts/unsponsored")
@@ -69,5 +67,10 @@ public class GiftController extends BaseController{
     @DeleteMapping("/gifts/{giftID}/sponsors/{sponsorID}")
     public ResponseEntity<?> unsponsorGift(@PathVariable Long giftID, @PathVariable Long sponsorID){
         return ResponseEntity.status(giftService.removeGiftFromSponsor(giftID, sponsorID)).build();
+    }
+
+    @GetMapping("/gifts/outstanding/count")
+    public CountDTO getOutstandingGiftCount(){
+        return new CountDTO(giftService.getOutstandingGiftCount());
     }
 }

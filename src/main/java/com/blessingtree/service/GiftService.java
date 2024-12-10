@@ -217,4 +217,8 @@ public class GiftService extends BaseService{
         }
     }
 
+    public Long getOutstandingGiftCount(){
+        return giftRepository.getOutstandingGiftCount();
+    }
+
 }
