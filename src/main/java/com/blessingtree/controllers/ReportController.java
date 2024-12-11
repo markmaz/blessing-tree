@@ -2,6 +2,7 @@ package com.blessingtree.controllers;
 
 import com.blessingtree.dto.RosterDTO;
 import com.blessingtree.dto.SponsorDTO;
+import com.blessingtree.dto.TagInfo;
 import com.blessingtree.service.GiftTagService;
 import com.blessingtree.service.ParentService;
 import com.blessingtree.service.ReportService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
@@ -61,6 +63,11 @@ public class ReportController extends BaseController {
         giftTagService.printGiftTagFromParent(pdf, parentService.getParents()).close();
     }
 
+    @PostMapping("/pdf/giftTags")
+    public void printSingleGiftTag(HttpServletResponse response, @RequestBody TagInfo tagInfo) throws IOException {
+        PdfDocument pdf = getPdfDocument(response);
+        giftTagService.printGiftTag(pdf, List.of(tagInfo)).close();
+    }
     @PostMapping("/pdf/reports/roster")
     public void generateRosterReport(HttpServletResponse response, @RequestBody RosterDTO roster) throws IOException {
         PdfDocument pdf = getPdfDocument(response);

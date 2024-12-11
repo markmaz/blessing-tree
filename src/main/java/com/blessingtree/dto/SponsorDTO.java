@@ -24,6 +24,7 @@ public class SponsorDTO {
     private Integer numberOfChildrenSponsored;
     private List<CallLogDTO> logEntries;
     private String giftStatus;
+    private String category;
 
     public Long getId() {
         return id;
@@ -161,16 +162,24 @@ public class SponsorDTO {
         this.giftStatus = giftStatus;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SponsorDTO that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(gifts, that.gifts) && Objects.equals(lastName, that.lastName) && Objects.equals(firstName, that.firstName) && Objects.equals(sponsorYear, that.sponsorYear) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(bestTimeToCall, that.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, that.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, that.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, that.wantToVolunteer) && Objects.equals(childAgePreference, that.childAgePreference) && Objects.equals(genderPreference, that.genderPreference) && Objects.equals(numberOfChildrenSponsored, that.numberOfChildrenSponsored) && Objects.equals(logEntries, that.logEntries);
+        return Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(gifts, that.gifts) && Objects.equals(lastName, that.lastName) && Objects.equals(firstName, that.firstName) && Objects.equals(sponsorYear, that.sponsorYear) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(bestTimeToCall, that.bestTimeToCall) && Objects.equals(hasSponsoredPreviously, that.hasSponsoredPreviously) && Objects.equals(howDidYouHearAboutUs, that.howDidYouHearAboutUs) && Objects.equals(wantToVolunteer, that.wantToVolunteer) && Objects.equals(childAgePreference, that.childAgePreference) && Objects.equals(genderPreference, that.genderPreference) && Objects.equals(numberOfChildrenSponsored, that.numberOfChildrenSponsored) && Objects.equals(logEntries, that.logEntries) && Objects.equals(giftStatus, that.giftStatus) && Objects.equals(category, that.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored, logEntries, giftStatus);
+        return Objects.hash(id, address, gifts, lastName, firstName, sponsorYear, phone, email, bestTimeToCall, hasSponsoredPreviously, howDidYouHearAboutUs, wantToVolunteer, childAgePreference, genderPreference, numberOfChildrenSponsored, logEntries, giftStatus, category);
     }
 
     @Override
@@ -193,6 +202,7 @@ public class SponsorDTO {
                 ", numberOfChildrenSponsored=" + numberOfChildrenSponsored +
                 ", logEntries=" + logEntries +
                 ", giftStatus='" + giftStatus + '\'' +
+                ", category='" + category + '\'' +
                 '}';
     }
 }

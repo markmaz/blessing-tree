@@ -52,7 +52,7 @@ public class GiftTagService {
         return printGiftTag(pdf, tags);
     }
 
-    private PdfDocument printGiftTag(PdfDocument pdf, List<TagInfo> tags) throws IOException {
+    public PdfDocument printGiftTag(PdfDocument pdf, List<TagInfo> tags) throws IOException {
         PdfPage page = pdf.addNewPage();
 
         float pageHeight = page.getPageSize().getHeight();

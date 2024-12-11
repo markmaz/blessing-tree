@@ -7,6 +7,7 @@ public class SimpleSponsorDTO {
     private String email;
     private Long id;
     private String giftStatus;
+    private String category;
 
     public String getLastName() {
         return lastName;
@@ -54,5 +55,13 @@ public class SimpleSponsorDTO {
 
     public void setGiftStatus(String giftStatus) {
         this.giftStatus = giftStatus;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
