@@ -1,11 +1,13 @@
 package com.blessingtree.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "sponsor_call_log")
+@Where(clause = "active = true")
 public class CallLog {
     @Id
     @Column(name="sponsor_call_log_id")
@@ -21,6 +23,17 @@ public class CallLog {
 
     @Column(name="call_description")
     private String callDescription;
+
+    @Column(name="active")
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     public Long getId() {
         return id;

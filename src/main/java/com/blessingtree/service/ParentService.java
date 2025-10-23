@@ -3,12 +3,10 @@ package com.blessingtree.service;
 import com.blessingtree.dto.FamilyNoteDTO;
 import com.blessingtree.dto.ParentDTO;
 import com.blessingtree.exceptions.ResourceNotFoundException;
-import com.blessingtree.model.Child;
-import com.blessingtree.model.FamilyNote;
-import com.blessingtree.model.Parent;
-import com.blessingtree.model.User;
+import com.blessingtree.model.*;
 import com.blessingtree.repository.ChildRepository;
 import com.blessingtree.repository.FamilyNoteRepository;
+import com.blessingtree.repository.ParentAllRepository;
 import com.blessingtree.repository.ParentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.http.HttpStatus;
@@ -35,7 +33,11 @@ public class ParentService extends BaseService{
     private final FamilyNoteRepository noteRepository;
 
     private final ChildRepository childRepository;
-    public ParentService(@Autowired  ParentRepository parentRepository,
+
+    private final ParentAllRepository parentAllRepository;
+
+    public ParentService(@Autowired ParentRepository parentRepository,
+                         @Autowired ParentAllRepository parentAllRepository,
                          @Autowired ModelMapper mapper,
                          @Autowired FamilyNoteRepository noteRepository,
                          @Autowired ChildRepository childRepository){
@@ -43,10 +45,18 @@ public class ParentService extends BaseService{
         this.parentRepository = parentRepository;
         this.noteRepository = noteRepository;
         this.childRepository = childRepository;
+        this.parentAllRepository = parentAllRepository;
     }
 
     public List<ParentDTO> getParents(){
         return parentRepository.findAll(Sort.by("btid"))
+                .stream()
+                .map(parent -> convertToDTO(parent, ParentDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<ParentDTO> getAllParents(){
+        return parentAllRepository.findAll(Sort.by("btid"))
                 .stream()
                 .map(parent -> convertToDTO(parent, ParentDTO.class))
                 .collect(Collectors.toList());
@@ -119,16 +129,15 @@ public class ParentService extends BaseService{
 
     @Transactional
     public ParentDTO updateParent(Long id, ParentDTO parentDTO, User user){
-        Parent parent = parentRepository.findParentById(id).orElseThrow(() -> new EntityNotFoundException("Parent Not found"));
+        ParentAll parent = parentAllRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Parent Not found"));
         parent.setBtid(parentDTO.getBtid());
         parent.setMHID(parentDTO.getMhid());
         parent.setFirstName(parentDTO.getFirstName());
         parent.setLastName(parentDTO.getLastName());
-        parent.setModifiedBy(user);
         Timestamp timestamp = Timestamp.from(Instant.now());
-        parent.setModifiedDate(timestamp.toString());
+        parent.setActive(parentDTO.isActive());
 
-        return convertToDTO(parentRepository.save(parent), ParentDTO.class);
+        return convertToDTO(parentAllRepository.save(parent), ParentDTO.class);
     }
 
     public ParentDTO addNote(Long parentID, FamilyNoteDTO note, User user){

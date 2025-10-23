@@ -53,6 +53,14 @@ public class SponsorService extends BaseService{
                 .collect(Collectors.toList());
     }
 
+    public List<SponsorDTO> getAllActiveSponsors(){
+        Sort sort = Sort.by("lastName", "firstName").ascending();
+        return sponsorRepository.findByActiveTrue(sort)
+                .stream()
+                .map(sponsor -> convertToDTO(sponsor, SponsorDTO.class))
+                .collect(Collectors.toList());
+    }
+
     public void deleteSponsor(Long id){
         Sponsor sponsor = sponsorRepository.findById(id).orElse(null);
 
@@ -119,6 +127,7 @@ public class SponsorService extends BaseService{
         sponsor.setLastName(sponsorDTO.getLastName());
         sponsor.setPhone(sponsorDTO.getPhone());
         sponsor.setWantToVolunteer(sponsorDTO.getWantToVolunteer());
+        sponsor.setActive(sponsorDTO.getActive());
 
         return modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }

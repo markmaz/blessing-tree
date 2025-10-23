@@ -16,6 +16,7 @@ public class ParentDTO {
     private String btid;
     private Integer mhid;
     private List<FamilyNoteDTO> notes;
+    private boolean active;
 
    public ParentDTO(Long id, String firstName, String lastName, String primaryPhone, String secondaryPhone,
                     String btid, Integer mhid, List<ChildDTO> children, List<FamilyNoteDTO> notes){
@@ -102,6 +103,14 @@ public class ParentDTO {
 
     public void setNotes(List<FamilyNoteDTO> notes) {
         this.notes = notes;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

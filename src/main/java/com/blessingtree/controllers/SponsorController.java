@@ -23,6 +23,9 @@ public class SponsorController extends BaseController{
         return sponsorService.getAllSponsors();
     }
 
+    @GetMapping("/sponsors/active")
+    public List<SponsorDTO> getAllActiveSponsors() { return sponsorService.getAllActiveSponsors(); }
+
     @GetMapping("/sponsors/{id}")
     public SponsorDTO getSponsorByID(@PathVariable Long id){
         return sponsorService.findSponsor(id);

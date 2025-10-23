@@ -12,6 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
+    <S extends Sponsor> List<S> findByActiveTrue(Sort sort);
+
     @Override
     <S extends Sponsor> List<S> findAll(Example<S> example, Sort sort);
 
@@ -25,9 +27,10 @@ public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
     void deleteById(Long aLong);
 
     @Override
+    @Query("SELECT count(*) FROM Sponsor s where s.active = true")
     long count();
 
-    @Query("SELECT s FROM Sponsor s LEFT JOIN s.gifts g GROUP BY s ORDER BY COUNT(g) asc")
+    @Query("SELECT s FROM Sponsor s LEFT JOIN s.gifts g WHERE s.active = true GROUP BY s ORDER BY COUNT(g) asc")
     List<Sponsor> findTop10SponsorsWithMostGifts();
 
     Sponsor findByEmailAndFirstNameAndLastName(String email, String firstName, String lastName);
