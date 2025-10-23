@@ -14,6 +14,16 @@ public class ChildDTO {
 
     private String name;
 
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public ChildDTO(){}
 
     public ChildDTO(Long id, List<GiftDTO> gifts, String age, String gender, String name){

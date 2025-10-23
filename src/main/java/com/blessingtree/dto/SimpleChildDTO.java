@@ -6,6 +6,15 @@ public class SimpleChildDTO {
     private String age;
     private SimpleParentDTO parent;
     private String name;
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     public String getGender() {
         return gender;
