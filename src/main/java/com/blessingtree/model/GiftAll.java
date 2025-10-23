@@ -7,9 +7,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name="gifts")
-@Where(clause = "active = true")
-public class Gift extends AuditRecord{
-    public Gift(){}
+public class GiftAll extends AuditRecord{
+    public GiftAll(){}
 
     @Id
     @Column(name="gift_id")
@@ -95,7 +94,7 @@ public class Gift extends AuditRecord{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Gift gift)) return false;
+        if (!(o instanceof GiftAll gift)) return false;
         return Objects.equals(id, gift.id) && Objects.equals(description, gift.description) && Objects.equals(size, gift.size) && Objects.equals(status, gift.status) && Objects.equals(child, gift.child) && Objects.equals(sponsor, gift.sponsor);
     }
 

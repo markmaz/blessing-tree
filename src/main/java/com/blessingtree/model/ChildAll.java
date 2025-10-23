@@ -1,16 +1,13 @@
 package com.blessingtree.model;
 
 import jakarta.persistence.*;
-import jakarta.servlet.annotation.WebFilter;
-import org.hibernate.annotations.Where;
 
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name="children")
-@Where(clause = "active = true")
-public class Child extends AuditRecord{
+public class ChildAll extends AuditRecord{
     @Id
     @Column(name="child_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +15,10 @@ public class Child extends AuditRecord{
 
     @ManyToOne
     @JoinColumn(name="parent_id", nullable = false)
-    private Parent parent;
+    private ParentAll parent;
 
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Gift> gifts;
+    private List<GiftAll> gifts;
 
     @Column(name="age")
     private String age;
@@ -32,17 +29,6 @@ public class Child extends AuditRecord{
     @Column(name="name")
     private String name;
 
-    @Column(name="active")
-    private Boolean active;
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public Long getId() {
         return id;
     }
@@ -51,19 +37,19 @@ public class Child extends AuditRecord{
         this.id = id;
     }
 
-    public Parent getParent() {
+    public ParentAll getParent() {
         return parent;
     }
 
-    public void setParent(Parent parent) {
+    public void setParent(ParentAll parent) {
         this.parent = parent;
     }
 
-    public List<Gift> getGifts() {
+    public List<GiftAll> getGifts() {
         return gifts;
     }
 
-    public void setGifts(List<Gift> gifts) {
+    public void setGifts(List<GiftAll> gifts) {
         this.gifts = gifts;
     }
 
@@ -94,7 +80,7 @@ public class Child extends AuditRecord{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Child child)) return false;
+        if (!(o instanceof ChildAll child)) return false;
         return Objects.equals(id, child.id) && Objects.equals(parent, child.parent) && Objects.equals(gifts, child.gifts) && Objects.equals(age, child.age) && Objects.equals(gender, child.gender) && Objects.equals(name, child.name);
     }
 

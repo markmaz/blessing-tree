@@ -16,6 +16,9 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
     @EntityGraph(attributePaths = {"notes"})
     List<Parent> findAll(Sort sort);
 
+    @EntityGraph(attributePaths = {"notes"})
+    List<Parent> findByActiveTrue(Sort sort);
+
     @Override
     <S extends Parent> S save(S entity);
 

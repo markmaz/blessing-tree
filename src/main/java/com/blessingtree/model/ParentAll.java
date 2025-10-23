@@ -1,6 +1,5 @@
 package com.blessingtree.model;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +8,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name="parents")
-@Where(clause = "active = true")
-public class Parent extends AuditRecord{
-    public Parent(){}
+public class ParentAll {
+    public ParentAll(){}
 
-    public Parent(Long id, String firstName, String lastName, String primaryPhone, String secondaryPhone,
-                  List<Child> children, String btid, Integer mhid) {
+    public ParentAll(Long id, String firstName, String lastName, String primaryPhone, String secondaryPhone,
+                  List<ChildAll> children, String btid, Integer mhid) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,7 +49,7 @@ public class Parent extends AuditRecord{
     private Boolean active;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Child> children = new ArrayList<>();
+    private List<ChildAll> children = new ArrayList<>();
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FamilyNote> notes = new ArrayList<>();
@@ -104,11 +102,11 @@ public class Parent extends AuditRecord{
         this.secondaryPhone = secondaryPhone;
     }
 
-    public List<Child> getChildren() {
+    public List<ChildAll> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Child> children) {
+    public void setChildren(List<ChildAll> children) {
         this.children = children;
     }
 
@@ -139,7 +137,7 @@ public class Parent extends AuditRecord{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Parent parent)) return false;
+        if (!(o instanceof ParentAll parent)) return false;
         return Objects.equals(id, parent.id) && Objects.equals(firstName, parent.firstName) && Objects.equals(lastName, parent.lastName) && Objects.equals(primaryPhone, parent.primaryPhone) && Objects.equals(btid, parent.btid) && Objects.equals(MHID, parent.MHID) && Objects.equals(secondaryPhone, parent.secondaryPhone) && Objects.equals(children, parent.children) && Objects.equals(notes, parent.notes);
     }
 
@@ -163,3 +161,4 @@ public class Parent extends AuditRecord{
                 '}';
     }
 }
+

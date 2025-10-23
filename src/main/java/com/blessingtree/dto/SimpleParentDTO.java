@@ -7,6 +7,15 @@ public class SimpleParentDTO {
     private String BTID;
     private String primaryPhone;
     private String emailAddress;
+    private boolean active;
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public String getLastName() {
         return lastName;

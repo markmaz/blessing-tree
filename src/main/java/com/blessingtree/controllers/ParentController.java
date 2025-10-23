@@ -27,9 +27,14 @@ public class ParentController extends BaseController{
         return parentService.saveParent(parentDTO, getLoggedInUser(servletRequest));
     }
 
+    @GetMapping("/parents/active")
+    public List<ParentDTO> getAllActiveParents(){
+        return parentService.getParents();
+    }
+
     @GetMapping("/parents")
     public List<ParentDTO> getAllParents(){
-        return parentService.getParents();
+        return parentService.getAllParents();
     }
 
     @GetMapping("/parents/{id}")
