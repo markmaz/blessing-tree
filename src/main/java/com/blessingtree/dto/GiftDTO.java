@@ -9,6 +9,15 @@ public class GiftDTO {
     private SimpleSponsorDTO sponsor;
     private String size;
     private String status;
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     public Long getId() {
         return id;
