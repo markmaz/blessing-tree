@@ -66,7 +66,7 @@ public class Sponsor extends AuditRecord {
     private String giftStatus;
 
     @Column(name="active")
-    private  Boolean active;
+    private  Boolean active = true;
 
     public Boolean getActive() {
         return active;

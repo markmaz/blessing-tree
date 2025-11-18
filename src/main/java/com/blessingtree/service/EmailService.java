@@ -110,10 +110,14 @@ public class EmailService extends BaseService{
     }
 
     private Boolean convertToBool(String s) {
-        if(s.equalsIgnoreCase("yes") || s.equalsIgnoreCase("y")
-                || s.equalsIgnoreCase("true")){
-            return true;
-        }else{
+        if(s != null) {
+            if (s.equalsIgnoreCase("yes") || s.equalsIgnoreCase("y")
+                    || s.equalsIgnoreCase("true")) {
+                return true;
+            } else {
+                return false;
+            }
+        }else {
             return false;
         }
     }
