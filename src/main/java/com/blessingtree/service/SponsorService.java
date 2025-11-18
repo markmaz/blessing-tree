@@ -166,6 +166,7 @@ public class SponsorService extends BaseService{
     public CallLogDTO addLogEntry(Long id, CallLogDTO logEntry) {
         Sponsor sponsor = sponsorRepository.findById(id).orElseThrow(() -> new RuntimeException("Missing sponsor"));
         CallLog log = modelMapper.map(logEntry, CallLog.class);
+        log.setActive(true);
         log.setSponsor(sponsor);
 
         return modelMapper.map(callLogRepository.save(log), CallLogDTO.class);
