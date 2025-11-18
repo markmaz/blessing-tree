@@ -93,7 +93,16 @@ public class EmailService extends BaseService{
         sponsor.setBestTimeToCall(map.get(BEST_TIME_TO_CALL));
         sponsor.setHasSponsoredPreviously(convertToBool(map.get(SPONSORED_PREVIOUSLY)));
 
-        sponsor.setNumberOfChildrenSponsored(Integer.parseInt(map.get(HOW_MANY_CHILDREN)));
+        if (map.get(HOW_MANY_CHILDREN) == null){
+            sponsor.setNumberOfChildrenSponsored(0);
+        }else{
+            try{
+                sponsor.setNumberOfChildrenSponsored(Integer.parseInt(map.get(HOW_MANY_CHILDREN)));
+            }catch(NumberFormatException e){
+                sponsor.setNumberOfChildrenSponsored(0);
+            }
+        }
+
         sponsor.setGenderPreference(map.get(GENDER_PREFERENCE));
         sponsor.setChildAgePreference(map.get(AGE_PREFERENCE));
 
