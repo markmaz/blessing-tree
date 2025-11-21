@@ -129,6 +129,10 @@ public class SponsorService extends BaseService{
         sponsor.setWantToVolunteer(sponsorDTO.getWantToVolunteer());
         sponsor.setActive(sponsorDTO.getActive());
 
+        if(sponsor.getGiftStatus() == null){
+            sponsor.setGiftStatus("Pending");
+        }
+
         return modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 
