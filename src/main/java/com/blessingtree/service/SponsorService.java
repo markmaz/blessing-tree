@@ -155,7 +155,7 @@ public class SponsorService extends BaseService{
 
         Address saveAddress = addressRepository.save(address);
         sponsor.setAddress(saveAddress);
-
+        sponsor.setGiftStatus("Pending");
         return  modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 

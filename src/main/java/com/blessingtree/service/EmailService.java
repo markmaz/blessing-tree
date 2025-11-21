@@ -114,7 +114,7 @@ public class EmailService extends BaseService{
 
         sponsor.setHowDidYouHearAboutUs(map.get(HEAR_ABOUT_US));
         sponsor.setWantToVolunteer(convertToBool(map.get(WANT_TO_VOLUNTEER)));
-
+        sponsor.setGiftStatus("Pending");
         return sponsor;
     }
 
