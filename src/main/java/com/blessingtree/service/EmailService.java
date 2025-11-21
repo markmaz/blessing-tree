@@ -69,6 +69,10 @@ public class EmailService extends BaseService{
         Sponsor sponsor = mapSponsor(map);
         Sponsor existing = sponsorService.findSponsor(sponsor.getEmail(), sponsor.getFirstName(), sponsor.getLastName());
 
+        if(sponsor.getFirstName() == null || sponsor.getLastName() == null){
+            return HttpStatus.SC_OK;
+        }
+
         if(existing == null) {
             sponsorService.createSponsor(sponsor);
         }
