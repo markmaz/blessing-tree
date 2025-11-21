@@ -138,25 +138,29 @@ public class SponsorService extends BaseService{
 
     @Transactional
     public SponsorDTO createSponsor(Sponsor sponsor){
-        User user = userRepository.findUserByUsername(SYSTEM_USER).orElse(null);
-        Timestamp timestamp = Timestamp.from(Instant.now());
-        sponsor.setModifiedDate(timestamp.toString());
-        sponsor.setModifiedBy(user);
+        if(sponsor != null) {
+            User user = userRepository.findUserByUsername(SYSTEM_USER).orElse(null);
+            Timestamp timestamp = Timestamp.from(Instant.now());
+            sponsor.setModifiedDate(timestamp.toString());
+            sponsor.setModifiedBy(user);
 
-        Address sponsorAddress = sponsor.getAddress();
-        Address address = addressRepository.findByStreetAndCityAndStateAndZip(sponsorAddress.getStreet(),
-                sponsorAddress.getCity(), sponsorAddress.getState(), sponsorAddress.getZip());
+            Address sponsorAddress = sponsor.getAddress();
+            Address address = addressRepository.findByStreetAndCityAndStateAndZip(sponsorAddress.getStreet(),
+                    sponsorAddress.getCity(), sponsorAddress.getState(), sponsorAddress.getZip());
 
-        if(address == null){
-            address = sponsorAddress;
-            address.setModifiedBy(user);
-            address.setModifiedDate(timestamp.toString());
+            if (address == null) {
+                address = sponsorAddress;
+                address.setModifiedBy(user);
+                address.setModifiedDate(timestamp.toString());
+            }
+
+            Address saveAddress = addressRepository.save(address);
+            sponsor.setAddress(saveAddress);
+            sponsor.setGiftStatus("Pending");
+            return modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
+        }else{
+            return new SponsorDTO();
         }
-
-        Address saveAddress = addressRepository.save(address);
-        sponsor.setAddress(saveAddress);
-        sponsor.setGiftStatus("Pending");
-        return  modelMapper.map(sponsorRepository.save(sponsor), SponsorDTO.class);
     }
 
     public Sponsor findSponsor(String email, String firstName, String lastName){
