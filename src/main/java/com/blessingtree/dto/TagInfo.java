@@ -7,7 +7,7 @@ public class TagInfo {
     private String childInfo;
     private String name;
     private String age;
-    private String gender;
+    private String gender = "";
 
 
     private String description;
