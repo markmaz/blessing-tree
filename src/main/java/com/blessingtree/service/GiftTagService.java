@@ -105,7 +105,7 @@ public class GiftTagService {
     private List<TagInfo> generateBlankTags(int numberOfTags) {
         List<TagInfo> tags = new ArrayList<>();
         for (int i = 0; i < numberOfTags; i++) {
-            tags.add(new TagInfo());
+            tags.add(new TagInfo(true));
         }
         return tags;
     }

@@ -8,7 +8,7 @@ public class TagInfo {
     private String name;
     private String age;
     private String gender = "";
-
+    private Boolean isBlank = false;
 
     private String description;
 
@@ -24,6 +24,13 @@ public class TagInfo {
         this.name = name;
         this.age = age;
         this.gender = gender;
+    }
+
+    public TagInfo(Boolean isBlank){
+        this.id = "";
+        this.childInfo = "";
+        this.description = "";
+        this.isBlank = isBlank;
     }
 
     public String getId() {
@@ -59,6 +66,11 @@ public class TagInfo {
             }
         }
         this.childInfo =  "Name: " + name + ", Age: " + age + ", Gender: " + sex;
+
+        if (this.isBlank){
+            return "";
+        }
+
         return childInfo;
     }
 
