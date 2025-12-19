@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.time.Year;
 @Service
 public class GiftTagService {
     private final float boxWidth = 7.5f * 72f; // 4 inches
@@ -159,7 +159,10 @@ public class GiftTagService {
         PdfFont boldFont = PdfFontFactory.createFont(IOUtils.toByteArray(fontStream), PdfEncodings.WINANSI);
         Color custom = new DeviceRgb(235, 84, 82);
 
-        canvas.add(new Paragraph("2024 Blessing Tree")
+
+        int year = Year.now().getValue();
+
+        canvas.add(new Paragraph(year + " Blessing Tree")
                 .setMargin(5).setPadding(5).setFontSize(24).setFontColor(custom).setFont(boldFont));
         canvas.showTextAligned(new Paragraph("Office of Social Services").setFontSize(10).setFont(boldFont), rectangle.getX() + 10, rectangle.getY() + 110, TextAlignment.LEFT);
         canvas.showTextAligned(new Paragraph("Magdalene House").setFontSize(10).setFont(boldFont), rectangle.getX() + 10, rectangle.getY() + 95, TextAlignment.LEFT);
